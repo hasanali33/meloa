@@ -1,102 +1,158 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
+export default function LandingPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="font-sans text-gray-900">
+      {/* Background blob overlay */}
+      <div className="absolute top-0 left-0 w-full h-[120vh] -z-10">
+      <Image src="/bg-blobs.png" alt="Background Blobs" fill className="object-cover scale-y-[1] opacity-100" />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Navbar */}
+      <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
+        <h1 className="text-lg font-bold">meloa</h1>
+        <div className="space-x-4">
+        <Link href="/therapists">
+          <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Browse Therapists</button>
+        </Link>
+        <Link href="/signup">
+          <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as Therapist</button>
+        </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      </header>
+
+      {/* Hero Section */}
+      <section className="text-center pt-40 pb-32 px-4 text-white">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
+        Discover the Power of <br /> Creative Therapy
+        </h2>
+        <p className="mt-6 text-lg max-w-2xl mx-auto">
+          Connect with licensed art, dance, drama, music and other creative therapists for meaningful, creative healing sessions.
+        </p>
+        <div className="mt-8 flex justify-center space-x-4">
+        <Link href="/therapists">
+          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            Browse Therapists
+          </button>
+        </Link>
+        <Link href="/signup">
+          <button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
+            Join as Therapist
+          </button>
+        </Link>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="bg-white py-24 px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+          {[
+            {
+              title: 'Creative Modalities',
+              desc: 'Find therapists who specialize in art, dance, drama, and music.',
+              icon: '/palette.png',
+            },
+            {
+              title: 'Virtual Convenience',
+              desc: 'Book sessions from home with seamless Calendly links.',
+              icon: '/calendar.png',
+            },
+            {
+              title: 'Personal Healing',
+              desc: 'Find support that speaks your language and creative soul.',
+              icon: '/healing.png',
+            },
+          ].map(({ title, desc, icon }) => (
+            <div key={title} className="text-center">
+              <Image src={icon} alt={title} width={64} height={64} className="mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">{title}</h3>
+              <p className="text-sm text-gray-600 max-w-xs mx-auto">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      {/* CTA */}
+      <section className="relative py-24 px-6 text-center text-gray-900 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="/cta-blob.png" // replace with the correct blob asset once ready
+            alt="CTA Background Blob"
+            layout="fill"
+            objectFit="cover"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        </div>
+
+        <h3 className="text-2xl font-bold mb-6">Ready to start your healing journey?</h3>
+        <button className="px-6 py-3 bg-blue-600 text-white rounded-lg flex items-center justify-center mx-auto hover:bg-blue-700 transition">
+          Find Your Therapist <ArrowRight className="ml-2 h-4 w-4" />
+        </button>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 max-w-6xl mx-auto">
+        <div>
+          <p className="text-purple-600 font-bold text-3xl">↑ Life Satisfaction</p>
+          <p className="text-sm mt-2">
+            Weekly creative activity improves mental health & happiness  
+            <span className="block text-xs text-gray-400 mt-1">— BBC Creativity Test, 2019</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-purple-600 font-bold text-3xl">↓ Trauma Symptoms</p>
+          <p className="text-sm mt-2">
+            Creative therapy helps process trauma and boost healing  
+            <span className="block text-xs text-gray-400 mt-1">— National Institutes of Health</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-purple-600 font-bold text-3xl">↑ Resilience</p>
+          <p className="text-sm mt-2">
+            Improves emotional regulation and self-esteem  
+            <span className="block text-xs text-gray-400 mt-1">— American Psychological Association</span>
+          </p>
+        </div>
+      </div>
+
+      </section>
+
+
+      {/* Testimonials */}
+      <section className="bg-[#f7f9fc] py-20 px-6 text-center">
+        <h3 className="text-2xl font-bold mb-12">What People Are Saying</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            {
+              name: 'Karen C.',
+              quote: 'Creative therapy has been a game changer for anxiety.',
+              image: '/testimonial1.png',
+            },
+            {
+              name: 'Jillian T.',
+              quote: 'I discovered new ways to express myself and heal.',
+              image: '/testimonial2.png',
+            },
+            {
+              name: 'Serena M.',
+              quote: 'Finding a therapist who gets art has been so refreshing.',
+              image: '/testimonial3.png',
+            },
+          ].map(({ name, quote, image }) => (
+            <div key={name} className="bg-white p-6 rounded-lg shadow text-left">
+              <Image src={image} alt={name} width={64} height={64} className="rounded-full mb-4" />
+              <p className="italic text-sm">"{quote}"</p>
+              <p className="mt-4 font-bold text-sm">{name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-t from-purple-100 to-blue-50 py-6 text-sm text-center text-gray-500">
+        &copy; 2025 meloa. All rights reserved.
       </footer>
     </div>
   );

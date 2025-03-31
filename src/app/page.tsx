@@ -14,7 +14,7 @@ export default function LandingPage() {
 
       {/* Navbar */}
       <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-        <h1 className="text-lg font-bold">meloa</h1>
+      <h1 className="text-3xl font-bold">meloa</h1>
         <div className="space-x-4">
         <Link href="/therapists">
           <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Browse Therapists</button>

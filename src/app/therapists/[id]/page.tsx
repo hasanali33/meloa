@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { supabase } from '../../../../lib/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import BookingForm from '../../../components/BookingForm';
 
 export default function TherapistProfile() {
   const { id } = useParams();
@@ -105,6 +106,7 @@ export default function TherapistProfile() {
           </div>
         </div>
       </div>
+      <BookingForm therapistId={therapist.user_id} />
     </div>
   );
 }

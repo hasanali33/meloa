@@ -24,28 +24,42 @@ export default function LandingPage() {
         </Link>
         </div>
       </header>
+      
 
       {/* Hero Section */}
       <section className="text-center pt-40 pb-32 px-4 text-white">
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-        Discover the Power of <br /> Creative Therapy
+          Discover the Power of <br /> Creative Therapy
         </h2>
         <p className="mt-6 text-lg max-w-2xl mx-auto">
-          Connect with licensed art, dance, drama, music and other creative therapists for meaningful, creative healing sessions.
+          Connect with licensed art, dance, drama, music and other creative therapists for
+          meaningful, creative healing sessions.
         </p>
+
         <div className="mt-8 flex justify-center space-x-4">
-        <Link href="/therapists">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            Browse Therapists
-          </button>
-        </Link>
-        <Link href="/signup">
-          <button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
-            Join as Therapist
-          </button>
-        </Link>
+          <Link href="/therapists">
+            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              Browse Therapists
+            </button>
+          </Link>
+          <Link href="/signup">
+            <button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
+              Join as Therapist
+            </button>
+          </Link>
+        </div>
+
+        {/* Quiz Button */}
+        <div className="mt-6">
+          <Link href="/quiz">
+            <button className="mt-4 px-5 py-2 bg-purple-600 text-white font-medium rounded-full hover:bg-purple-700 transition">
+              🎨 Not sure what type of therapy you need? Take the Quiz
+            </button>
+          </Link>
         </div>
       </section>
+
+
 
       {/* Features */}
       <section className="bg-white py-24 px-6">
@@ -75,6 +89,8 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      
 
 
       {/* CTA */}

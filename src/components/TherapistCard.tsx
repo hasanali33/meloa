@@ -4,39 +4,69 @@ import Link from 'next/link';
 
 const TherapistCard = ({ therapist }) => {
   return (
-    <div className="border rounded-xl shadow hover:shadow-lg transition overflow-hidden bg-white">
+    <div className="bg-white rounded-3xl shadow-xl p-6 flex items-center justify-between max-w-5xl mx-auto mb-8">
+      {/* Profile Image */}
       <img
-        src={therapist.profile_image_url}
+        src={therapist.profile_image_url || '/fallback-avatar.png'}
         alt={`${therapist.full_name}'s profile`}
-        className="w-full h-36 object-cover"
+        className="w-24 h-24 rounded-full object-cover border-4 border-purple-200"
       />
-      <div className="p-4 space-y-1">
-        <h2 className="text-md font-semibold">{therapist.full_name}</h2>
-        <p className="text-sm text-gray-500">{therapist.bio}</p>
-        <p className="text-sm">
-          <span className="font-semibold text-pink-600">🎨 Modalities:</span>{' '}
-          {therapist.modalities?.join(', ')}
-        </p>
-        <p className="text-sm">
-          <span className="font-semibold text-pink-600">💖 Specialties:</span>{' '}
-          {therapist.specialties?.join(', ')}
-        </p>
-        <div className="mt-2 flex justify-between items-center">
-          <a
-            href={therapist.calendly_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-500 hover:underline"
-          >
-            Book a session →
-          </a>
-          <Link
-            href={`/therapists/${therapist.id}`}
-            className="text-sm text-purple-600 font-medium hover:underline"
-          >
-            Learn More
-          </Link>
+
+      {/* Info Section */}
+      <div className="flex-1 mx-6 space-y-2">
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold text-gray-800">{therapist.full_name}</h2>
+          <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
+            {therapist.licensed ? 'Licensed Therapist' : 'Healing Practitioner (Non-Clinical)'}
+          </span>
         </div>
+        <p className="text-gray-600 text-sm">{therapist.bio}</p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 text-sm">
+          {therapist.specialties?.map((spec, idx) => (
+            <span
+              key={`spec-${idx}`}
+              className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full"
+            >
+              {spec}
+            </span>
+          ))}
+          {therapist.modalities?.map((mod, idx) => (
+            <span
+              key={`mod-${idx}`}
+              className="bg-purple-100 text-purple-600 px-3 py-1 rounded-full"
+            >
+              {mod}
+            </span>
+          ))}
+          {therapist.vibe_tags?.map((vibe, idx) => (
+            <span
+              key={`vibe-${idx}`}
+              className="bg-green-100 text-green-600 px-3 py-1 rounded-full"
+            >
+              {vibe}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col items-end gap-2">
+        <Link
+          href={`/therapists/${therapist.id}`}
+          className="text-sm text-purple-600 hover:underline font-medium"
+        >
+          View Profile
+        </Link>
+        <a
+          href={therapist.calendly_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 text-sm rounded-full hover:opacity-90"
+        >
+          Book Session
+        </a>
       </div>
     </div>
   );

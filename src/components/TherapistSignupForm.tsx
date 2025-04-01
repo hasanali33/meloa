@@ -15,7 +15,7 @@ type TherapistFormData = {
   calendlyLink: string;
   isVirtual: boolean;
   profileImage: File | null;
-  credentialsFile: File | null;
+  vibeTags: string[];
 };
 
 const TherapistSignupForm = () => {
@@ -29,7 +29,7 @@ const TherapistSignupForm = () => {
     calendlyLink: '',
     isVirtual: false,
     profileImage: null,
-    credentialsFile: null,
+    vibeTags: [],
   });
 
   const [uploading, setUploading] = useState(false);
@@ -51,6 +51,13 @@ const TherapistSignupForm = () => {
         specialties: checked
           ? [...prev.specialties, value]
           : prev.specialties.filter((item) => item !== value),
+      }));
+    } else if (type === 'checkbox' && name === 'vibeTags') {
+      setFormData((prev) => ({
+        ...prev,
+        vibeTags: checked
+          ? [...prev.vibeTags, value]
+          : prev.vibeTags.filter((item) => item !== value),
       }));
     } else if (type === 'checkbox') {
       setFormData((prev) => ({ ...prev, [name]: checked }));
@@ -77,7 +84,6 @@ const TherapistSignupForm = () => {
     setMessage('');
 
     try {
-      // Sign up the user in Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -92,25 +98,17 @@ const TherapistSignupForm = () => {
           })
         : '';
 
-      const credentialsUrl = formData.credentialsFile
-        ? await uploadFile(formData.credentialsFile, {
-            bucket: 'credentials',
-            folder: 'therapists',
-          })
-        : '';
-
-      // Insert into therapists table
       const { error } = await supabase.from('therapists').insert({
         full_name: formData.fullName,
         email: formData.email,
         bio: formData.bio,
         profile_image_url: profileImageUrl,
-        credentials_url: credentialsUrl,
         modalities: formData.modalities,
         specialties: formData.specialties,
         calendly_link: formData.calendlyLink,
         is_virtual: formData.isVirtual,
         user_id: authData.user?.id,
+        vibe_tags: formData.vibeTags,
       });
 
       if (error) throw error;
@@ -127,7 +125,7 @@ const TherapistSignupForm = () => {
         calendlyLink: '',
         isVirtual: false,
         profileImage: null,
-        credentialsFile: null,
+        vibeTags: [],
       });
     } catch (err: any) {
       console.error('❌ ERROR:', err.message || err);
@@ -137,142 +135,101 @@ const TherapistSignupForm = () => {
     }
   };
 
+  const modalityOptions = [
+    'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy', 'Breathwork',
+    'Somatic Therapy', 'Parts Work', 'Journaling', 'Inner Child Healing',
+    'Creative Expression', 'Guided Visualization', 'EFT Tapping', 'Spiritual Counseling'
+  ];
+
+  const specialtyOptions = [
+    'Anxiety', 'Grief', 'Trauma', 'Depression', 'Relationships', 'Self-Esteem',
+    'Burnout', 'Creative Blocks', 'Spiritual Exploration', 'Life Transitions',
+    'PTSD', 'LGBTQ+', 'Cultural Identity'
+  ];
+
+  const vibeOptions = [
+    'Gentle',
+    'Grounded',
+    'Intuitive',
+    'Energetic',
+    'Creative',
+    'Playful',
+    'Insightful',
+    'Reflective',
+    'Calm',
+    'Centered',
+    'Empowering',
+    'Direct',
+    'Nurturing',
+    'Warm',
+    'Mindful',
+    'Present'
+  ];
+  
+
   return (
     <div className="relative min-h-screen bg-white flex items-center justify-center px-4">
-      {/* Background */}
       <div className="absolute inset-0 -z-10">
         <img src="/bg-blobs.png" alt="Blobs" className="w-full h-full object-cover" />
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-8 max-w-2xl w-full p-8 bg-white shadow-xl rounded-3xl mt-10 mb-20 border"
-      >
+      <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl w-full p-10 bg-white shadow-xl rounded-3xl mt-10 mb-20 border">
         <h1 className="text-3xl font-extrabold text-center text-blue-700 mb-4">🌟 Therapist Signup</h1>
 
-        <input
-          type="text"
-          name="fullName"
-          placeholder="Full Name"
-          value={formData.fullName}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-        />
+        <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg" required />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg" required />
+        <input type="password" name="password" placeholder="Create Password" value={formData.password} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg" required />
+        <textarea name="bio" placeholder="Short Bio" value={formData.bio} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg" required />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Create Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-        />
-
-        <textarea
-          name="bio"
-          placeholder="Short Bio"
-          value={formData.bio}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-        />
-
-        <fieldset className="space-y-2">
-          <legend className="font-semibold text-lg text-purple-600">🎨 Modalities</legend>
-          {['Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy'].map((modality) => (
-            <label key={modality} className="block text-sm">
-              <input
-                type="checkbox"
-                name="modalities"
-                value={modality}
-                checked={formData.modalities.includes(modality)}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              {modality}
-            </label>
-          ))}
+        <fieldset>
+          <legend className="font-semibold text-lg text-purple-600 mb-2">🎨 Modalities</legend>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2">
+            {modalityOptions.map((modality) => (
+              <label key={modality} className="text-sm flex items-center">
+                <input type="checkbox" name="modalities" value={modality} checked={formData.modalities.includes(modality)} onChange={handleChange} className="mr-2" />
+                {modality}
+              </label>
+            ))}
+          </div>
         </fieldset>
 
-        <fieldset className="space-y-2">
-          <legend className="font-semibold text-lg text-purple-600">💖 Specialties</legend>
-          {['Anxiety', 'Grief', 'Trauma', 'Kids', 'Depression'].map((specialty) => (
-            <label key={specialty} className="block text-sm">
-              <input
-                type="checkbox"
-                name="specialties"
-                value={specialty}
-                checked={formData.specialties.includes(specialty)}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              {specialty}
-            </label>
-          ))}
+        <fieldset>
+          <legend className="font-semibold text-lg text-purple-600 mb-2">💖 Specialties</legend>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2">
+            {specialtyOptions.map((specialty) => (
+              <label key={specialty} className="text-sm flex items-center">
+                <input type="checkbox" name="specialties" value={specialty} checked={formData.specialties.includes(specialty)} onChange={handleChange} className="mr-2" />
+                {specialty}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="font-semibold text-lg text-green-600 mb-2">🌿 Vibe Tags</legend>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2">
+            {vibeOptions.map((tag) => (
+              <label key={tag} className="text-sm flex items-center">
+                <input type="checkbox" name="vibeTags" value={tag} checked={formData.vibeTags.includes(tag)} onChange={handleChange} className="mr-2" />
+                {tag}
+              </label>
+            ))}
+          </div>
         </fieldset>
 
         <div>
-          <label className="block text-sm font-medium">🖼️ Profile Image</label>
-          <input
-            type="file"
-            name="profileImage"
-            accept="image/*"
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
-          />
+          <label className="block text-sm font-medium">🖼️ Profile Image (optional)</label>
+          <input type="file" name="profileImage" accept="image/*" onChange={handleChange} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100" />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">📄 Credentials File</label>
-          <input
-            type="file"
-            name="credentialsFile"
-            accept=".pdf,.doc,.docx"
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-        </div>
-
-        <input
-          type="text"
-          name="calendlyLink"
-          placeholder="Calendly Booking Link"
-          value={formData.calendlyLink}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-        />
+        <input type="text" name="calendlyLink" placeholder="Calendly Booking Link" value={formData.calendlyLink} onChange={handleChange} className="w-full p-3 border border-gray-300 rounded-lg" required />
 
         <label className="block text-sm">
-          <input
-            type="checkbox"
-            name="isVirtual"
-            checked={formData.isVirtual}
-            onChange={handleChange}
-            className="mr-2"
-          />
+          <input type="checkbox" name="isVirtual" checked={formData.isVirtual} onChange={handleChange} className="mr-2" />
           🌐 Offers virtual sessions
         </label>
 
-        <button
-          type="submit"
-          disabled={uploading}
-          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-full py-3 rounded-lg font-semibold shadow-lg hover:opacity-90 transition"
-        >
+        <button type="submit" disabled={uploading} className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-full py-3 rounded-lg font-semibold shadow-lg hover:opacity-90 transition">
           {uploading ? (
             <span className="flex justify-center items-center">
               <Loader2 className="animate-spin mr-2 h-5 w-5" /> Submitting...

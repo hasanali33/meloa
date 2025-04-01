@@ -6,6 +6,12 @@ import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+const vibeTagOptions = [
+  'Gentle', 'Grounded', 'Intuitive', 'Energetic', 'Creative', 'Playful',
+  'Insightful', 'Reflective', 'Calm', 'Centered', 'Empowering', 'Direct',
+  'Nurturing', 'Warm', 'Mindful', 'Present'
+];
+
 const TherapistProfilePage = () => {
   const [therapist, setTherapist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +54,7 @@ const TherapistProfilePage = () => {
     setTherapist((prev) => ({
       ...prev,
       [field]: checked
-        ? [...prev[field], value]
+        ? [...(prev[field] || []), value]
         : prev[field].filter((item) => item !== value),
     }));
   };
@@ -65,6 +71,7 @@ const TherapistProfilePage = () => {
         calendly_link: therapist.calendly_link,
         modalities: therapist.modalities,
         specialties: therapist.specialties,
+        vibe_tags: therapist.vibe_tags,
       })
       .eq('email', therapist.email);
 
@@ -159,6 +166,23 @@ const TherapistProfilePage = () => {
                 className="mr-2"
               />{' '}
               {specialty}
+            </label>
+          ))}
+        </fieldset>
+
+        <fieldset className="space-y-2">
+          <legend className="font-semibold text-lg text-green-700">🌿 Vibe Tags</legend>
+          {vibeTagOptions.map((tag) => (
+            <label key={tag} className="block text-sm">
+              <input
+                type="checkbox"
+                name="vibe_tags"
+                value={tag}
+                checked={therapist.vibe_tags?.includes(tag)}
+                onChange={(e) => handleMultiSelect(e, 'vibe_tags')}
+                className="mr-2"
+              />{' '}
+              {tag}
             </label>
           ))}
         </fieldset>

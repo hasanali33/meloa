@@ -1,3 +1,5 @@
+// Step 1: Update your QuizPage to pass the quiz result as a URL query param to the therapists page
+
 'use client';
 
 import { useState } from 'react';
@@ -6,26 +8,60 @@ import Image from 'next/image';
 
 const questions = [
   {
-    question: 'What are you hoping to get out of therapy?',
-    options: ['Self-expression', 'Stress relief', 'Healing trauma', 'Exploration'],
+    question: 'When emotions come up, what’s most true for you?',
+    options: [
+      'I overthink or try to “fix” them',
+      'I shut down or dissociate',
+      'I want to feel them but don’t know how',
+      'I try to stay with them and let them move through me',
+    ],
   },
   {
-    question: 'What creative outlet appeals to you most?',
-    options: ['Art', 'Music', 'Dance', 'Drama'],
+    question: 'Which of these sounds most supportive right now?',
+    options: [
+      'Exploring my inner child and unmet needs',
+      'Grounding myself through body awareness',
+      'Expressing emotions creatively (writing, art, etc.)',
+      'Feeling held in a gentle 1-on-1 space',
+    ],
   },
   {
-    question: 'What emotions are you currently dealing with?',
-    options: ['Anxiety', 'Grief', 'Burnout', 'Trauma'],
+    question: 'What kind of energy do you want in your sessions?',
+    options: [
+      'Reflective and thoughtful',
+      'Creative and expressive',
+      'Somatic and body-based',
+      'Soft and nurturing',
+    ],
   },
   {
-    question: 'Do you prefer solo or group sessions?',
-    options: ['1-on-1 sessions', 'Group sessions'],
+    question: 'Do you prefer licensed therapists or alternative guides?',
+    options: [
+      'Licensed therapists only',
+      'Open to both',
+      'Non-clinical healing guides are more my vibe',
+    ],
   },
   {
     question: 'Would you like therapy online or in person?',
     options: ['Online', 'In Person', 'Either'],
   },
 ];
+
+const modalityMap = {
+  'Creative Expression & Art-Based Healing': [
+    'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Creative Expression', 'Journaling',
+  ],
+  'Somatic Therapy & Body-Based Work': [
+    'Somatic Therapy', 'Breathwork', 'Guided Visualization',
+  ],
+  'Inner Child & Parts Work': [
+    'Inner Child Healing', 'Parts Work', 'EFT Tapping',
+  ],
+  'Reflective Healing & Talk-Based Support': [
+    'Spiritual Counseling', 'Drama Therapy', 'Talk Therapy'
+  ]
+};
 
 export default function QuizPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -44,14 +80,14 @@ export default function QuizPage() {
   };
 
   const recommendTherapy = () => {
-    if (answers.includes('Art') || answers.includes('Self-expression')) return 'Art Therapy';
-    if (answers.includes('Music') || answers.includes('Stress relief')) return 'Music Therapy';
-    if (answers.includes('Dance')) return 'Dance Therapy';
-    if (answers.includes('Drama')) return 'Drama Therapy';
-    return 'Creative Therapy';
+    if (answers.includes('Creative and expressive') || answers.includes('Expressing emotions creatively (writing, art, etc.)')) return 'Creative Expression & Art-Based Healing';
+    if (answers.includes('Somatic and body-based') || answers.includes('Grounding myself through body awareness')) return 'Somatic Therapy & Body-Based Work';
+    if (answers.includes('Exploring my inner child and unmet needs')) return 'Inner Child & Parts Work';
+    return 'Reflective Healing & Talk-Based Support';
   };
 
   const therapy = recommendTherapy();
+  const tags = modalityMap[therapy];
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -88,14 +124,18 @@ export default function QuizPage() {
           </>
         ) : (
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-purple-700 mb-4">🎨 Your Recommended Therapy</h2>
+            <h2 className="text-2xl font-bold text-purple-700 mb-4">💫 Your Healing Style</h2>
             <p className="text-gray-700 mb-6">
-              Based on your answers, <span className="font-semibold">{therapy}</span> may be a great fit for
-              helping you express emotions, reduce stress, and heal through creativity.
+              Based on your answers, <span className="font-semibold">{therapy}</span> may be the most supportive for where you are right now.
             </p>
-            <Link href="/therapists">
+            <Link
+              href={{
+                pathname: '/therapists',
+                query: { modality: tags.join(',') },
+              }}
+            >
               <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full hover:opacity-90 transition">
-                Browse Therapists →
+                Browse Practitioners →
               </button>
             </Link>
           </div>

@@ -1,5 +1,3 @@
-// Step 1: Update your QuizPage to pass the quiz result as a URL query param to the therapists page
-
 'use client';
 
 import { useState } from 'react';
@@ -59,7 +57,7 @@ const modalityMap = {
     'Inner Child Healing', 'Parts Work', 'EFT Tapping',
   ],
   'Reflective Healing & Talk-Based Support': [
-    'Spiritual Counseling', 'Drama Therapy', 'Talk Therapy'
+    'Spiritual Counseling', 'Drama Therapy', 'Talk Therapy',
   ]
 };
 
@@ -68,9 +66,9 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState([]);
   const [showResult, setShowResult] = useState(false);
 
-  const handleAnswer = (option) => {
-    const newAnswers = [...answers, option];
-    setAnswers(newAnswers);
+  const handleAnswer = (option: string) => {
+    const updatedAnswers = [...answers, option];
+    setAnswers(updatedAnswers);
 
     if (currentStep + 1 < questions.length) {
       setCurrentStep(currentStep + 1);
@@ -80,9 +78,17 @@ export default function QuizPage() {
   };
 
   const recommendTherapy = () => {
-    if (answers.includes('Creative and expressive') || answers.includes('Expressing emotions creatively (writing, art, etc.)')) return 'Creative Expression & Art-Based Healing';
-    if (answers.includes('Somatic and body-based') || answers.includes('Grounding myself through body awareness')) return 'Somatic Therapy & Body-Based Work';
-    if (answers.includes('Exploring my inner child and unmet needs')) return 'Inner Child & Parts Work';
+    if (
+      answers.includes('Creative and expressive') ||
+      answers.includes('Expressing emotions creatively (writing, art, etc.)')
+    ) return 'Creative Expression & Art-Based Healing';
+    if (
+      answers.includes('Somatic and body-based') ||
+      answers.includes('Grounding myself through body awareness')
+    ) return 'Somatic Therapy & Body-Based Work';
+    if (
+      answers.includes('Exploring my inner child and unmet needs')
+    ) return 'Inner Child & Parts Work';
     return 'Reflective Healing & Talk-Based Support';
   };
 
@@ -90,31 +96,28 @@ export default function QuizPage() {
   const tags = modalityMap[therapy];
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background */}
+    <div className="min-h-screen flex items-center justify-center bg-[#d5eefe] relative px-4">
       <div className="absolute inset-0 -z-10">
         <Image
           src="/cta-blob.png"
           alt="Background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-100"
+          fill
+          className="object-cover opacity-100"
         />
       </div>
 
-      {/* Quiz Container */}
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md text-center">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
         {!showResult ? (
           <>
-            <h2 className="text-lg font-bold text-black mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 leading-snug">
               {questions[currentStep].question}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid gap-3">
               {questions[currentStep].options.map((option) => (
                 <button
                   key={option}
                   onClick={() => handleAnswer(option)}
-                  className="border border-purple-400 text-purple-600 rounded-full px-4 py-2 hover:bg-purple-100 transition"
+                  className="border border-purple-500 text-purple-600 rounded-full px-4 py-2 hover:bg-purple-50 transition text-sm"
                 >
                   {option}
                 </button>
@@ -125,8 +128,8 @@ export default function QuizPage() {
         ) : (
           <div className="text-center">
             <h2 className="text-2xl font-bold text-purple-700 mb-4">💫 Your Healing Style</h2>
-            <p className="text-gray-700 mb-6">
-              Based on your answers, <span className="font-semibold">{therapy}</span> may be the most supportive for where you are right now.
+            <p className="text-gray-800 mb-6 leading-relaxed">
+              Based on your answers, <span className="font-semibold">{therapy}</span> might be the most supportive for where you are right now.
             </p>
             <Link
               href={{

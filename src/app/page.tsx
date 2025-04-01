@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -25,13 +24,13 @@ export default function LandingPage() {
   const handleSearch = () => {
     const query = new URLSearchParams();
     if (selectedModality) query.append('modality', selectedModality);
-    if (selectedSpecialty) query.append('specialty', selectedSpecialty);
-    router.push(`/therapists?${query.toString()}`);
+    if (selectedSpecialty) query.append('goal', selectedSpecialty);
+    router.push(`/quiz?${query.toString()}`);
   };
 
   return (
     <div className="font-sans text-gray-900">
-      {/* Background blob overlay */}
+      {/* Background */}
       <div className="absolute top-0 left-0 w-full h-[120vh] -z-10">
         <Image src="/bg-blobs.png" alt="Background Blobs" fill className="object-cover scale-y-[1] opacity-100" />
       </div>
@@ -41,64 +40,61 @@ export default function LandingPage() {
         <h1 className="text-3xl font-bold">meloa</h1>
         <div className="space-x-4">
           <Link href="/therapists">
-            <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Explore Practitioners</button>
+            <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
           </Link>
           <Link href="/signup">
-            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as Practitioner</button>
+            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as a Guide</button>
           </Link>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="text-center pt-40 pb-32 px-4 text-white">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-          Healing Beyond Talk
-        </h2>
-        <p className="mt-6 text-lg max-w-2xl mx-auto">
-          Meloa is a new kind of platform — built for people who want healing through creativity, embodiment, and emotional safety. Discover licensed therapists and trusted healing guides who go beyond traditional talk therapy.
+        <h1 className="text-5xl font-extrabold">Begin Your Healing Journey</h1>
+        <p className="mt-4 text-lg max-w-xl mx-auto">
+          Meloa connects you with licensed therapists and soulful healing guides through a personalized journey.
+          Whether you're feeling stuck, numb, anxious, or just craving connection — we'll help you find the right support.
         </p>
+
 
         <div className="mt-8 flex justify-center space-x-4">
           <Link href="/therapists">
             <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-              Explore Practitioners
+              Connect with a Guide
             </button>
           </Link>
           <Link href="/signup">
             <button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
-              Join as Practitioner
+              Join as a Guide
             </button>
           </Link>
         </div>
 
-        {/* Quiz Button */}
-        <div className="mt-6">
-          <Link href="/quiz">
-            <button className="mt-4 px-5 py-2 bg-purple-600 text-white font-medium rounded-full hover:bg-purple-700 transition">
-              🎨 Not sure what kind of healing fits you? Take the Quiz
-            </button>
-          </Link>
-        </div>
-
-        {/* Search Bar Dropdown */}
-        <div className="mt-10 max-w-2xl mx-auto bg-white p-4 rounded-xl shadow-md text-gray-800 flex flex-col sm:flex-row items-center gap-4">
+        {/* Guided Search Bar */}
+        <div className="mt-12 max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl text-gray-800 space-y-4">
+          <h4 className="text-lg font-semibold text-center text-gray-700">
+            🌱 What are you seeking support for?
+          </h4>
           <select
-            className="w-full sm:w-1/2 p-2 border rounded-md"
+            className="w-full p-3 border rounded-md"
             value={selectedSpecialty}
             onChange={(e) => setSelectedSpecialty(e.target.value)}
           >
-            <option value="">Select your healing goal</option>
+            <option value="">Select your healing intention</option>
             {specialtyOptions.map((specialty) => (
               <option key={specialty} value={specialty}>{specialty}</option>
             ))}
           </select>
 
+          <h4 className="text-lg font-semibold text-center text-gray-700 mt-4">
+            🎨 What kind of healing resonates with you?
+          </h4>
           <select
-            className="w-full sm:w-1/2 p-2 border rounded-md"
+            className="w-full p-3 border rounded-md"
             value={selectedModality}
             onChange={(e) => setSelectedModality(e.target.value)}
           >
-            <option value="">Select a modality</option>
+            <option value="">Select a healing style</option>
             {modalityOptions.map((modality) => (
               <option key={modality} value={modality}>{modality}</option>
             ))}
@@ -106,12 +102,16 @@ export default function LandingPage() {
 
           <button
             onClick={handleSearch}
-            className="w-full sm:w-auto px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+            className="w-full mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition"
           >
-            Find Your Guide
+            ✨ Start My Healing Journey
           </button>
         </div>
       </section>
+
+      {/* Keep the rest of your sections the same */}
+      {/* How It Works, Features, Practitioner CTA, Disclaimer, Testimonials, Footer */}
+
 
       {/* How It Works */}
       <section className="bg-white py-24 px-6 text-center">
@@ -119,15 +119,15 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
           <div>
             <h4 className="text-lg font-semibold mb-2">1. Take the Quiz</h4>
-            <p className="text-sm text-gray-600">Reflect on your healing style — whether that’s creative, body-based, or reflective — and find your match.</p>
+            <p className="text-sm text-gray-600">We’ll gently guide you through questions to understand your emotional style..</p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-2">2. Get Matched</h4>
-            <p className="text-sm text-gray-600">We’ll show you licensed therapists and healing guides who offer the kind of work that actually resonates with you.</p>
+            <p className="text-sm text-gray-600">We’ll show you licensed therapists and soulful guides aligned with your needs.</p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-2">3. Book a Session</h4>
-            <p className="text-sm text-gray-600">Start your journey with someone who speaks your language — emotionally, creatively, or somatically.</p>
+            <p className="text-sm text-gray-600">Start your journey with someone who truly gets you.</p>
           </div>
         </div>
       </section>
@@ -159,13 +159,13 @@ export default function LandingPage() {
 
       {/* Practitioner CTA */}
       <section className="bg-white py-24 px-6 text-center">
-        <h3 className="text-2xl font-bold mb-6">For Practitioners Who Practice Differently</h3>
+        <h3 className="text-2xl font-bold mb-6">For Healers Who Practice Differently</h3>
         <p className="text-lg max-w-3xl mx-auto text-gray-600">
           Meloa is for therapists and healers who use somatic practices, parts work, journaling, inner child work, and creative techniques — but feel boxed in by traditional platforms. If you’re ready to show up as your full self, this is your space.
         </p>
         <Link href="/signup">
           <button className="mt-6 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-            Join as Practitioner
+            Join as a Guide
           </button>
         </Link>
       </section>
@@ -179,7 +179,7 @@ export default function LandingPage() {
 
       {/* Testimonials */}
       <section className="bg-[#f7f9fc] py-20 px-6 text-center">
-        <h3 className="text-2xl font-bold mb-12">What People Are Saying</h3>
+        <h3 className="text-2xl font-bold mb-12">Stories of Real Healing</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[{
             name: 'Karen C.',

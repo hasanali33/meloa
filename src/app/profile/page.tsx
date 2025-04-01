@@ -12,8 +12,18 @@ const vibeTagOptions = [
   'Nurturing', 'Warm', 'Mindful', 'Present'
 ];
 
+type Therapist = {
+  full_name: string;
+  bio: string;
+  calendly_link: string;
+  modalities: string[];
+  specialties: string[];
+  vibe_tags: string[];
+  email: string;
+};
+
 const TherapistProfilePage = () => {
-  const [therapist, setTherapist] = useState(null);
+  const [therapist, setTherapist] = useState<Therapist | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const router = useRouter();
@@ -44,24 +54,35 @@ const TherapistProfilePage = () => {
     fetchTherapist();
   }, [router]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setTherapist((prev) => ({ ...prev, [name]: value }));
+    setTherapist((prev) => prev ? { ...prev, [name]: value } : prev);
   };
 
-  const handleMultiSelect = (e, field) => {
+  const handleMultiSelect = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof Therapist
+  ) => {
     const { value, checked } = e.target;
-    setTherapist((prev) => ({
-      ...prev,
-      [field]: checked
-        ? [...(prev[field] || []), value]
-        : prev[field].filter((item) => item !== value),
-    }));
+    setTherapist((prev) =>
+      prev
+        ? {
+            ...prev,
+            [field]: checked
+              ? [...(prev[field] || []), value]
+              : prev[field].filter((item: string) => item !== value),
+          }
+        : prev
+    );
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage('');
+
+    if (!therapist) return;
 
     const { error } = await supabase
       .from('therapists')
@@ -113,7 +134,7 @@ const TherapistProfilePage = () => {
         <input
           type="text"
           name="full_name"
-          value={therapist.full_name || ''}
+          value={therapist.full_name}
           onChange={handleChange}
           placeholder="Full Name"
           className="w-full p-3 border border-gray-300 rounded-lg"
@@ -121,7 +142,7 @@ const TherapistProfilePage = () => {
 
         <textarea
           name="bio"
-          value={therapist.bio || ''}
+          value={therapist.bio}
           onChange={handleChange}
           placeholder="Short Bio"
           className="w-full p-3 border border-gray-300 rounded-lg"
@@ -130,7 +151,7 @@ const TherapistProfilePage = () => {
         <input
           type="text"
           name="calendly_link"
-          value={therapist.calendly_link || ''}
+          value={therapist.calendly_link}
           onChange={handleChange}
           placeholder="Calendly Link"
           className="w-full p-3 border border-gray-300 rounded-lg"
@@ -147,7 +168,7 @@ const TherapistProfilePage = () => {
                 checked={therapist.modalities?.includes(modality)}
                 onChange={(e) => handleMultiSelect(e, 'modalities')}
                 className="mr-2"
-              />{' '}
+              />
               {modality}
             </label>
           ))}
@@ -164,7 +185,7 @@ const TherapistProfilePage = () => {
                 checked={therapist.specialties?.includes(specialty)}
                 onChange={(e) => handleMultiSelect(e, 'specialties')}
                 className="mr-2"
-              />{' '}
+              />
               {specialty}
             </label>
           ))}
@@ -181,7 +202,7 @@ const TherapistProfilePage = () => {
                 checked={therapist.vibe_tags?.includes(tag)}
                 onChange={(e) => handleMultiSelect(e, 'vibe_tags')}
                 className="mr-2"
-              />{' '}
+              />
               {tag}
             </label>
           ))}

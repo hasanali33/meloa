@@ -59,7 +59,12 @@ export default function DashboardPage() {
       {/* Tab Content */}
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-xl">
         {activeTab === 'requests' && <BookingRequests userId={user?.id} />}
-        {activeTab === 'messages' && <MessagingPanel userId={user?.id} />}
+        {activeTab === 'messages' && (
+        <div className="text-gray-500 text-center py-10">
+          Messaging is coming soon!
+        </div>
+      )}
+
         {activeTab === 'profile' && <TherapistProfileEditor user={user} />}
       </div>
     </div>

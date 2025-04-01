@@ -1,24 +1,50 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import { Loader2, User, Info, LinkIcon } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { supabase } from '../../lib/supabaseClient';
+import { Loader2, User, Info, LinkIcon } from 'lucide-react';
+
+const modalityOptions = [
+  'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy',
+  'Breathwork', 'Somatic Therapy', 'Parts Work', 'Journaling',
+  'Inner Child Healing', 'Creative Expression', 'Guided Visualization',
+  'EFT Tapping', 'Spiritual Counseling'
+];
+
+const specialtyOptions = [
+  'Anxiety', 'Grief', 'Trauma', 'Depression', 'Relationships', 'Self-Esteem',
+  'Burnout', 'Creative Blocks', 'Spiritual Exploration', 'Life Transitions',
+  'PTSD', 'LGBTQ+', 'Cultural Identity'
+];
+
+const vibeTagOptions = [
+  'Gentle', 'Grounded', 'Intuitive', 'Energetic', 'Creative', 'Playful',
+  'Insightful', 'Reflective', 'Calm', 'Centered', 'Empowering', 'Direct',
+  'Nurturing', 'Warm', 'Mindful', 'Present'
+];
 
 export default function TherapistProfileEditor({ user }) {
   const [therapist, setTherapist] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     async function fetchTherapist() {
       const { data, error } = await supabase
-        .from("therapists")
-        .select("*")
-        .eq("user_id", user.id)
+        .from('therapists')
+        .select('*')
+        .eq('user_id', user.id)
         .single();
 
       if (error) console.error(error);
-      else setTherapist(data);
+      else {
+        setTherapist({
+          ...data,
+          modalities: data.modalities || [],
+          specialties: data.specialties || [],
+          vibe_tags: data.vibe_tags || [],
+        });
+      }
       setLoading(false);
     }
 
@@ -30,24 +56,37 @@ export default function TherapistProfileEditor({ user }) {
     setTherapist((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleMultiSelect = (e, field) => {
+    const { value, checked } = e.target;
+    setTherapist((prev) => ({
+      ...prev,
+      [field]: checked
+        ? [...(prev[field] || []), value]
+        : prev[field].filter((item) => item !== value),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    setMessage('');
 
     const { error } = await supabase
-      .from("therapists")
+      .from('therapists')
       .update({
         full_name: therapist.full_name,
         bio: therapist.bio,
         calendly_link: therapist.calendly_link,
+        modalities: therapist.modalities,
+        specialties: therapist.specialties,
+        vibe_tags: therapist.vibe_tags,
       })
-      .eq("user_id", user.id);
+      .eq('user_id', user.id);
 
     if (error) {
       console.error(error);
-      setMessage("❌ Error updating profile.");
+      setMessage('❌ Error updating profile.');
     } else {
-      setMessage("✅ Profile updated successfully!");
+      setMessage('✅ Profile updated successfully!');
     }
   };
 
@@ -72,7 +111,7 @@ export default function TherapistProfileEditor({ user }) {
           <input
             type="text"
             name="full_name"
-            value={therapist.full_name || ""}
+            value={therapist.full_name || ''}
             onChange={handleChange}
             placeholder="Your full name"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -86,7 +125,7 @@ export default function TherapistProfileEditor({ user }) {
           </label>
           <textarea
             name="bio"
-            value={therapist.bio || ""}
+            value={therapist.bio || ''}
             onChange={handleChange}
             placeholder="Tell us a bit about your background..."
             rows={4}
@@ -102,14 +141,40 @@ export default function TherapistProfileEditor({ user }) {
           <input
             type="text"
             name="calendly_link"
-            value={therapist.calendly_link || ""}
+            value={therapist.calendly_link || ''}
             onChange={handleChange}
             placeholder="https://calendly.com/your-link"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
           />
         </div>
 
-        {/* Save Button */}
+        {/* Modalities */}
+        <CheckboxGroup
+          title="🎨 Modalities"
+          name="modalities"
+          options={modalityOptions}
+          selected={therapist.modalities}
+          onChange={(e) => handleMultiSelect(e, 'modalities')}
+        />
+
+        {/* Specialties */}
+        <CheckboxGroup
+          title="💖 Specialties"
+          name="specialties"
+          options={specialtyOptions}
+          selected={therapist.specialties}
+          onChange={(e) => handleMultiSelect(e, 'specialties')}
+        />
+
+        {/* Vibe Tags */}
+        <CheckboxGroup
+          title="🌿 Vibe Tags"
+          name="vibe_tags"
+          options={vibeTagOptions}
+          selected={therapist.vibe_tags}
+          onChange={(e) => handleMultiSelect(e, 'vibe_tags')}
+        />
+
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold py-3 rounded-lg hover:opacity-90 transition"
@@ -117,11 +182,34 @@ export default function TherapistProfileEditor({ user }) {
           💾 Save Changes
         </button>
 
-        {/* Feedback Message */}
         {message && (
           <p className="text-center text-sm font-medium mt-2 text-blue-600">{message}</p>
         )}
       </form>
     </div>
+  );
+}
+
+// Reusable checkbox group component
+function CheckboxGroup({ title, name, options, selected = [], onChange }) {
+  return (
+    <fieldset className="space-y-1">
+      <legend className="font-semibold text-lg text-purple-600">{title}</legend>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+        {options.map((opt) => (
+          <label key={opt} className="text-sm flex items-center gap-2">
+            <input
+              type="checkbox"
+              name={name}
+              value={opt}
+              checked={(selected || []).includes(opt)}
+              onChange={onChange}
+              className="accent-purple-600"
+            />
+            {opt}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }

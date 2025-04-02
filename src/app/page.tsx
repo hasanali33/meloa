@@ -49,9 +49,9 @@ export default function LandingPage() {
 
   const handleSearch = () => {
     const query = new URLSearchParams();
-    if (selectedSpecialty) query.append('goal', selectedSpecialty);
+    if (selectedSpecialty) query.append('intention', selectedSpecialty);
     router.push(`/quiz?${query.toString()}`);
-  };
+  };  
 
   return (
     <div className="font-sans text-gray-900 relative overflow-hidden">

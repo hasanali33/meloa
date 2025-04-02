@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const questions = [
@@ -57,23 +58,52 @@ const modalityMap = {
   'Inner Child & Parts Work': [
     'Inner Child Healing', 'Parts Work', 'EFT Tapping',
   ],
-  'Reflective Healing & Talk-Based Support': [
+  'Mindfulness-Based Healing': [
     'Spiritual Counseling', 'Drama Therapy', 'Talk Therapy',
-  ]
+  ],
+  'Cultural & Ancestral Healing': [
+    'Storytelling', 'Ritual', 'Chanting', 'Herbalism', 'Ceremony',
+  ],
+  'Spiritual & Energetic Healing': [
+    'Energy Clearing', 'Reiki', 'Channeling', 'Sound Healing', 'Spiritual Coaching',
+  ],
 };
 
 const slugMap = {
   'Creative Expression & Art-Based Healing': 'creative-expression',
   'Somatic Therapy & Body-Based Work': 'somatic',
   'Inner Child & Parts Work': 'inner-child',
-  'Reflective Healing & Talk-Based Support': 'reflective',
+  'Cultural & Ancestral Healing': 'cultural',
+  'Spiritual & Energetic Healing': 'spiritual',
+  'Mindfulness-Based Healing': 'mindfulness',
 };
+
+const intentionMessages = {
+    "I'm navigating a breakup": "Breakups can shake our sense of self. This journey will help you begin to heal, reconnect, and feel whole again.",
+    "I'm feeling anxious all the time": "Anxiety is heavy to carry. Let’s explore gentle practices that calm your system and bring back peace.",
+    "I want to explore my identity": "That’s a beautiful and brave intention. This space is here to support your unfolding and self-discovery.",
+    "I'm burned out": "We know burnout can be overwhelming. Let’s discover how we can help you recharge and reconnect.",
+    "I need help processing trauma": "You're not alone in carrying your pain. This journey offers compassionate paths to gently process and heal.",
+    "I'm stuck creatively": "Feeling blocked is frustrating — but your creativity is still there. Let’s reconnect with it together.",
+    "I'm curious about spirituality": "Your curiosity is sacred. Let’s explore healing paths that align with your spiritual questions and desires.",
+    "I want to reconnect with my body": "It’s powerful to seek connection with your body. This journey will guide you to modalities that support that reconnection.",
+    "I'm learning to set boundaries": "Setting boundaries is an act of self-love. Let’s find support that empowers you to honor your needs.",
+    "I want to love myself again": "You deserve your own tenderness. Let’s rediscover the parts of you that are deeply lovable and whole.",
+    "I'm grieving someone or something": "Grief takes many forms. This journey will help you hold that grief with care and compassion.",
+    "I feel disconnected from who I am": "It’s okay to feel lost. We’ll help you find healing paths that bring you back to yourself.",
+    "I want to feel more present": "Presence is a gift. Let’s find modalities that support groundedness and connection in your daily life.",
+    "I'm overwhelmed and don’t know why": "That feeling matters. Let’s gently explore what’s beneath the overwhelm and find soothing support.",
+    "I want to rebuild trust in myself": "You’re worthy of trust — especially from yourself. Let’s begin a healing journey to restore that inner bond.",
+  };
+  
 
 export default function QuizPage() {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showResult, setShowResult] = useState(false);
+  const searchParams = useSearchParams();
+  const selectedIntention = searchParams.get('intention');
 
   const handleAnswer = (option) => {
     const updatedAnswers = [...answers, option];
@@ -119,21 +149,37 @@ export default function QuizPage() {
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
         {!started ? (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-2xl font-bold text-purple-700 mb-4">✨ Find Your Healing Style</h1>
-            <p className="text-gray-700 mb-6">
-              This short, reflective journey will help match you with healing styles that resonate with your emotional and spiritual needs.
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-2xl font-bold text-purple-700 mb-4">✨ Find Your Healing Style</h1>
+          <p className="text-gray-700 mb-2">What’s on your heart today?</p>
+        
+          {selectedIntention && (
+            <>
+              <p className="text-lg font-semibold text-purple-700 mb-2">“{selectedIntention}”</p>
+              <p className="text-gray-700 mb-6 italic">
+                {intentionMessages[selectedIntention] ||
+                  `I see you’re feeling ${selectedIntention}. That’s important to acknowledge. This journey is here to guide you through your unique healing needs and support you with styles that resonate deeply with your emotional and spiritual self.`}
+              </p>
+            </>
+          )}
+        
+          {!selectedIntention && (
+            <p className="text-gray-700 mb-6 italic">
+              You deserve your own tenderness. Let’s rediscover the parts of you that are deeply lovable and whole.
             </p>
-            <button
-              onClick={() => setStarted(true)}
-              className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
-            >
-              Begin Journey
-            </button>
-          </motion.div>
+          )}
+        
+          <button
+            onClick={() => setStarted(true)}
+            className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
+          >
+            Begin Journey
+          </button>
+        </motion.div>
+        
         ) : !showResult ? (
           <AnimatePresence mode="wait">
             <motion.div

@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LandingPage() {
   const router = useRouter();
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
   const [selectedModality, setSelectedModality] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const modalityOptions = [
     'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy', 'Breathwork', 'Somatic Therapy',
@@ -20,6 +22,22 @@ export default function LandingPage() {
     'Anxiety', 'Grief', 'Trauma', 'Depression', 'Relationships', 'Self-Esteem', 'Burnout', 'Creative Blocks',
     'Spiritual Exploration', 'Life Transitions', 'PTSD', 'LGBTQ+', 'Cultural Identity'
   ];
+
+  const healingExamples = [
+    { emoji: '🌿', text: 'A monk in Japan who teaches healing through silence and ritual.' },
+    { emoji: '🌺', text: 'A woman in Mexico who guides through curanderismo and ancestral practices.' },
+    { emoji: '🕊️', text: 'A breathwork facilitator who studied under elders in Peru.' },
+    { emoji: '🖤', text: 'A Black somatic healer using dance to process generational trauma.' },
+    { emoji: '📖', text: 'A licensed therapist who also uses poetry and bodywork in sessions.' },
+    { emoji: '🌈', text: 'A trans guide teaching journaling and self-love in a safe container.' }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % healingExamples.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = () => {
     const query = new URLSearchParams();
@@ -112,6 +130,29 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Why Meloa (Typing Animation) */}
+      <section className="bg-[#f5f7fa] py-20 px-6 text-center">
+        <h2 className="text-3xl font-bold mb-4">Why Meloa?</h2>
+        <p className="max-w-2xl mx-auto text-gray-700 mb-6">
+          Traditional therapy isn’t for everyone. Meloa is for those seeking healing that feels <strong>creative</strong>, <strong>cultural</strong>, and <strong>soulful</strong>. From licensed professionals to spiritual guides, artists, and ancestral teachers — we honor the full spectrum of healing.
+        </p>
+
+        <div className="text-xl font-medium text-gray-800 min-h-[40px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6 }}
+            >
+              {healingExamples[currentIndex].emoji} {healingExamples[currentIndex].text}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+
       {/* Healing Paths Grid */}
       <section className="px-6 py-20 text-center bg-white">
         <h2 className="text-3xl font-bold mb-6">What Kind of Healing Speaks to You?</h2>
@@ -154,7 +195,7 @@ export default function LandingPage() {
         <h3 className="text-2xl font-bold mb-12">How Meloa Works</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
           <div>
-            <h4 className="text-lg font-semibold mb-2">1. Take the Quiz</h4>
+            <h4 className="text-lg font-semibold mb-2">1. Discover Your Style of Healing</h4>
             <p className="text-sm text-gray-600">We’ll gently guide you through questions to understand your emotional style..</p>
           </div>
           <div>

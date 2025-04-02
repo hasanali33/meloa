@@ -29,15 +29,17 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="font-sans text-gray-900">
+    <div className="font-sans text-gray-900 relative overflow-hidden">
       {/* Background */}
       <div className="absolute top-0 left-0 w-full h-[120vh] -z-10">
-        <Image src="/bg-blobs.png" alt="Background Blobs" fill className="object-cover scale-y-[1] opacity-100" />
+        <Image src="/bg-blobs.png" alt="Background Blobs" fill className="object-cover opacity-100" />
       </div>
 
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-        <h1 className="text-3xl font-bold">meloa</h1>
+      <header className="flex justify-between items-center px-6 py-4 text-white z-10 relative">
+        <h1 className="text-3xl font-bold">
+          <span className="bg-gradient-to-r text-white text-transparent bg-clip-text">meloa</span>
+        </h1>
         <div className="space-x-4">
           <Link href="/therapists">
             <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
@@ -48,24 +50,25 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="text-center pt-40 pb-32 px-4 text-white">
-        <h1 className="text-5xl font-extrabold">Begin Your Healing Journey</h1>
-        <p className="mt-4 text-lg max-w-xl mx-auto">
-          Meloa connects you with licensed therapists and soulful healing guides through a personalized journey.
-          Whether you're feeling stuck, numb, anxious, or just craving connection — we'll help you find the right support.
+      {/* Hero Section Revamp */}
+      <section className="text-center pt-40 pb-32 px-4 text-white relative z-10">
+        <h1 className="text-5xl font-extrabold mb-6">
+          Healing should feel <span className="text-pink-500">creative</span>, <span className="text-blue-400">human</span>,<br />
+          and <span className="text-green-400">soulful</span> — not clinical.
+        </h1>
+        <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
+          Meloa is the first modern platform for licensed and non-licensed healing guides — where you can explore somatic therapy, expressive arts, inner child work, and more.
         </p>
 
-
         <div className="mt-8 flex justify-center space-x-4">
-          <Link href="/therapists">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-              Connect with a Guide
+          <Link href="/quiz">
+            <button className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+              ✨ Find Your Healing Match
             </button>
           </Link>
-          <Link href="/signup">
-            <button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
-              Join as a Guide
+          <Link href="/therapists">
+            <button className="px-6 py-3 bg-white text-purple-600 border border-purple-600 rounded-lg hover:bg-purple-50 transition">
+              Browse Guides
             </button>
           </Link>
         </div>
@@ -109,12 +112,14 @@ export default function LandingPage() {
         </div>
       </section>
 
+
+
       {/* Keep the rest of your sections the same */}
       {/* How It Works, Features, Practitioner CTA, Disclaimer, Testimonials, Footer */}
 
 
       {/* How It Works */}
-      <section className="bg-white py-24 px-6 text-center">
+      <section className="bg-white px-6 pt-10 pb-20 text-center">
         <h3 className="text-2xl font-bold mb-12">How Meloa Works</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
           <div>

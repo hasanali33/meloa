@@ -11,6 +11,7 @@ export default function LandingPage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
   const [selectedModality, setSelectedModality] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showProviderMenu, setShowProviderMenu] = useState(false);
 
   const modalityOptions = [
     'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy', 'Breathwork', 'Somatic Therapy',
@@ -54,10 +55,34 @@ export default function LandingPage() {
       </div>
 
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 text-white z-10 relative">
-        <h1 className="text-3xl font-bold">
-          <span className="bg-gradient-to-r text-white text-transparent bg-clip-text">meloa</span>
-        </h1>
+      <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
+        <div className="flex items-center space-x-8 relative">
+          <h1 className="text-3xl font-bold">meloa</h1>
+          <Link href="/about">
+            <span className="hover:underline cursor-pointer">About</span>
+          </Link>
+          <Link href="/how-it-works">
+            <span className="hover:underline cursor-pointer">How It Works</span>
+          </Link>
+          <div className="relative">
+            <span
+              className="hover:underline cursor-pointer"
+              onClick={() => setShowProviderMenu(!showProviderMenu)}
+            >
+              For Providers
+            </span>
+            {showProviderMenu && (
+              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-md overflow-hidden z-50">
+                <Link href="/signup">
+                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Join as a Guide</div>
+                </Link>
+                <Link href="/login">
+                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Log In</div>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
         <div className="space-x-4">
           <Link href="/therapists">
             <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>

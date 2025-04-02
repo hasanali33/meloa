@@ -9,20 +9,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function LandingPage() {
   const router = useRouter();
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
-  const [selectedModality, setSelectedModality] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showProviderMenu, setShowProviderMenu] = useState(false);
 
-  const modalityOptions = [
-    'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy', 'Breathwork', 'Somatic Therapy',
-    'Parts Work', 'Journaling', 'Inner Child Healing', 'Creative Expression', 'Guided Visualization',
-    'EFT Tapping', 'Spiritual Counseling'
+  const userIntentOptions = [
+    "I'm navigating a breakup",
+    "I'm feeling anxious all the time",
+    "I want to explore my identity",
+    "I'm burned out",
+    "I need help processing trauma",
+    "I'm stuck creatively",
+    "I'm curious about spirituality",
+    "I want to reconnect with my body",
+    "I'm learning to set boundaries",
+    "I want to love myself again",
+    "I'm grieving someone or something",
+    "I feel disconnected from who I am",
+    "I want to feel more present",
+    "I'm overwhelmed and don’t know why",
+    "I want to rebuild trust in myself"
   ];
-
-  const specialtyOptions = [
-    'Anxiety', 'Grief', 'Trauma', 'Depression', 'Relationships', 'Self-Esteem', 'Burnout', 'Creative Blocks',
-    'Spiritual Exploration', 'Life Transitions', 'PTSD', 'LGBTQ+', 'Cultural Identity'
-  ];
+  
 
   const healingExamples = [
     { emoji: '🌿', text: 'A monk in Japan who teaches healing through silence and ritual.' },
@@ -42,7 +49,6 @@ export default function LandingPage() {
 
   const handleSearch = () => {
     const query = new URLSearchParams();
-    if (selectedModality) query.append('modality', selectedModality);
     if (selectedSpecialty) query.append('goal', selectedSpecialty);
     router.push(`/quiz?${query.toString()}`);
   };
@@ -93,14 +99,14 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section Revamp */}
+      {/* Hero Section */}
       <section className="text-center pt-40 pb-32 px-4 text-white relative z-10">
         <h1 className="text-5xl font-extrabold mb-6">
           Healing should feel <span className="text-pink-500">creative</span>, <span className="text-blue-400">human</span>,<br />
           and <span className="text-green-400">soulful</span> — not clinical.
         </h1>
         <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
-        Meloa is the first platform where <strong>licensed therapists</strong>, <strong>creative guides</strong>, <strong>spiritual teachers</strong>, and <strong>cultural healers</strong> come together — to help you heal through <strong>somatic work</strong>, <strong>expression</strong>, <strong>ritual</strong>, and <strong>personalized guidance</strong> in a safe, supportive space.
+          Meloa is the first platform where <strong>licensed therapists</strong>, <strong>creative guides</strong>, <strong>spiritual teachers</strong>, and <strong>cultural healers</strong> come together — to help you heal through <strong>somatic work</strong>, <strong>expression</strong>, <strong>ritual</strong>, and <strong>personalized guidance</strong> in a safe, supportive space.
         </p>
 
         <div className="mt-8 flex justify-center space-x-4">
@@ -116,39 +122,29 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        {/* Guided Search Bar */}
-        <div className="mt-12 max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl text-gray-800 space-y-4">
+        {/* New Emotion-Based Dropdown */}
+        <div className="mt-12 max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl text-gray-800 space-y-6">
           <h4 className="text-lg font-semibold text-center text-gray-700">
-            🌱 What are you seeking support for?
+            🌱 What's on your heart today?
           </h4>
           <select
             className="w-full p-3 border rounded-md"
             value={selectedSpecialty}
             onChange={(e) => setSelectedSpecialty(e.target.value)}
           >
-            <option value="">Select your healing intention</option>
-            {specialtyOptions.map((specialty) => (
-              <option key={specialty} value={specialty}>{specialty}</option>
+            <option value="">Select your intention</option>
+            {userIntentOptions.map((intent) => (
+              <option key={intent} value={intent}>{intent}</option>
             ))}
           </select>
 
-          <h4 className="text-lg font-semibold text-center text-gray-700 mt-4">
-            🎨 What kind of healing resonates with you?
-          </h4>
-          <select
-            className="w-full p-3 border rounded-md"
-            value={selectedModality}
-            onChange={(e) => setSelectedModality(e.target.value)}
-          >
-            <option value="">Select a healing style</option>
-            {modalityOptions.map((modality) => (
-              <option key={modality} value={modality}>{modality}</option>
-            ))}
-          </select>
+          <p className="text-center text-sm text-gray-500">
+            Not sure where to start? <Link href="/quiz" className="underline text-purple-600">Take the quiz to discover your healing style.</Link>
+          </p>
 
           <button
             onClick={handleSearch}
-            className="w-full mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition"
+            className="w-full mt-2 px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition"
           >
             ✨ Start My Healing Journey
           </button>

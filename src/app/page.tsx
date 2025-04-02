@@ -112,11 +112,42 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Healing Paths Grid */}
+      <section className="px-6 py-20 text-center bg-white">
+        <h2 className="text-3xl font-bold mb-6">What Kind of Healing Speaks to You?</h2>
+        <p className="text-gray-600 mb-10 max-w-2xl mx-auto">
+          Explore different healing journeys — from body-based to creative, ancestral to spiritual.
+        </p>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {[{
+            emoji: '🌿', title: 'Somatic Healing', href: '/healing/somatic', desc: 'Reconnect with your body and release stored tension.'
+          }, {
+            emoji: '🎨', title: 'Creative Expression', href: '/healing/creative-expression', desc: 'Heal through painting, music, dance, and poetry.'
+          }, {
+            emoji: '🧸', title: 'Inner Child Work', href: '/healing/inner-child', desc: 'Nurture the younger parts of you that still need love.'
+          }, {
+            emoji: '🔮', title: 'Spiritual Healing', href: '/healing/spiritual-healing', desc: 'Explore intuitive, energetic, and ancestral practices.'
+          }, {
+            emoji: '🌍', title: 'Cultural Healing', href: '/healing/cultural-healing', desc: 'Honor your roots and reconnect with your lineage.'
+          }, {
+            emoji: '🧘‍♀️', title: 'Mindfulness-Based Healing', href: '/healing/mindfulness-healing', desc: 'Breathe, slow down, and return to the present moment.'
+          }].map((path) => (
+            <Link
+              key={path.href}
+              href={path.href}
+              className="bg-white border rounded-xl p-6 text-left shadow hover:shadow-md transition"
+            >
+              <div className="text-3xl mb-2">{path.emoji}</div>
+              <h3 className="text-lg font-semibold mb-1">{path.title}</h3>
+              <p className="text-gray-600 text-sm">{path.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Keep the rest of your sections the same */}
       {/* How It Works, Features, Practitioner CTA, Disclaimer, Testimonials, Footer */}
-
 
       {/* How It Works */}
       <section className="bg-white px-6 pt-10 pb-20 text-center">

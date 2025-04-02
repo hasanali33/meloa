@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import TherapistCard from '@/components/TherapistCard';
+
 
 const TherapistCard = ({ therapist }) => {
   return (
@@ -15,9 +17,15 @@ const TherapistCard = ({ therapist }) => {
       <div className="flex-1 mx-6 space-y-2">
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-semibold text-gray-800">{therapist.full_name}</h2>
-          <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
-            {therapist.licensed ? 'Licensed Therapist' : 'Healing Practitioner (Non-Clinical)'}
-          </span>
+          <span
+            className={`text-xs px-3 py-1 rounded-full font-semibold ${
+                therapist.is_licensed
+                ? 'bg-blue-100 text-blue-700'
+                : 'bg-yellow-100 text-yellow-800'
+            }`}
+            >
+            {therapist.is_licensed ? 'Licensed Therapist' : 'Healing Practitioner (Non-Clinical)'}
+            </span>
         </div>
         <p className="text-gray-600 text-sm">{therapist.bio}</p>
 

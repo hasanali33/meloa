@@ -185,11 +185,11 @@ export default function LandingPage() {
           }, {
             emoji: '🧸', title: 'Inner Child Work', href: '/healing/inner-child', desc: 'Nurture the younger parts of you that still need love.'
           }, {
-            emoji: '🔮', title: 'Spiritual Healing', href: '/healing/spiritual-healing', desc: 'Explore intuitive, energetic, and ancestral practices.'
+            emoji: '🔮', title: 'Spiritual Healing', href: '/healing/spiritual', desc: 'Explore intuitive, energetic, and ancestral practices.'
           }, {
-            emoji: '🌍', title: 'Cultural Healing', href: '/healing/cultural-healing', desc: 'Honor your roots and reconnect with your lineage.'
+            emoji: '🌍', title: 'Cultural Healing', href: '/healing/cultural', desc: 'Honor your roots and reconnect with your lineage.'
           }, {
-            emoji: '🧘‍♀️', title: 'Mindfulness-Based Healing', href: '/healing/mindfulness-healing', desc: 'Breathe, slow down, and return to the present moment.'
+            emoji: '🧘‍♀️', title: 'Mindfulness-Based Healing', href: '/healing/mindfulness', desc: 'Breathe, slow down, and return to the present moment.'
           }].map((path) => (
             <Link
               key={path.href}

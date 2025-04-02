@@ -16,7 +16,17 @@ type TherapistFormData = {
   isVirtual: boolean;
   profileImage: File | null;
   vibeTags: string[];
+  healingPath: string[]; // ✅ added
 };
+
+const healingPaths = [
+  'Somatic Healing',
+  'Inner Child Work',
+  'Creative Expression',
+  'Spiritual Healing',
+  'Cultural Healing',
+  'Mindfulness-Based Healing'
+];
 
 const TherapistSignupForm = () => {
   const [formData, setFormData] = useState<TherapistFormData>({
@@ -30,6 +40,7 @@ const TherapistSignupForm = () => {
     isVirtual: false,
     profileImage: null,
     vibeTags: [],
+    healingPath: [], // ✅ added
   });
 
   const [uploading, setUploading] = useState(false);
@@ -58,6 +69,13 @@ const TherapistSignupForm = () => {
         vibeTags: checked
           ? [...prev.vibeTags, value]
           : prev.vibeTags.filter((item) => item !== value),
+      }));
+    } else if (type === 'checkbox' && name === 'healingPath') {
+      setFormData((prev) => ({
+        ...prev,
+        healingPath: checked
+          ? [...prev.healingPath, value]
+          : prev.healingPath.filter((item) => item !== value),
       }));
     } else if (type === 'checkbox') {
       setFormData((prev) => ({ ...prev, [name]: checked }));
@@ -109,6 +127,7 @@ const TherapistSignupForm = () => {
         is_virtual: formData.isVirtual,
         user_id: authData.user?.id,
         vibe_tags: formData.vibeTags,
+        healing_path: formData.healingPath, // ✅ inserted
       });
 
       if (error) throw error;
@@ -126,6 +145,7 @@ const TherapistSignupForm = () => {
         isVirtual: false,
         profileImage: null,
         vibeTags: [],
+        healingPath: [], // ✅ reset
       });
     } catch (err: any) {
       console.error('❌ ERROR:', err.message || err);
@@ -148,24 +168,10 @@ const TherapistSignupForm = () => {
   ];
 
   const vibeOptions = [
-    'Gentle',
-    'Grounded',
-    'Intuitive',
-    'Energetic',
-    'Creative',
-    'Playful',
-    'Insightful',
-    'Reflective',
-    'Calm',
-    'Centered',
-    'Empowering',
-    'Direct',
-    'Nurturing',
-    'Warm',
-    'Mindful',
-    'Present'
+    'Gentle', 'Grounded', 'Intuitive', 'Energetic', 'Creative', 'Playful',
+    'Insightful', 'Reflective', 'Calm', 'Centered', 'Empowering', 'Direct',
+    'Nurturing', 'Warm', 'Mindful', 'Present'
   ];
-  
 
   return (
     <div className="relative min-h-screen bg-white flex items-center justify-center px-4">
@@ -212,6 +218,25 @@ const TherapistSignupForm = () => {
               <label key={tag} className="text-sm flex items-center">
                 <input type="checkbox" name="vibeTags" value={tag} checked={formData.vibeTags.includes(tag)} onChange={handleChange} className="mr-2" />
                 {tag}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="font-semibold text-lg text-blue-600 mb-2">🌀 Healing Paths</legend>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2">
+            {healingPaths.map((path) => (
+              <label key={path} className="text-sm flex items-center">
+                <input
+                  type="checkbox"
+                  name="healingPath"
+                  value={path}
+                  checked={formData.healingPath.includes(path)}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {path}
               </label>
             ))}
           </div>

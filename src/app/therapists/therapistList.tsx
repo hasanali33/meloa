@@ -15,7 +15,7 @@ export default function TherapistList() {
 
   const modalityParam = searchParams.get('modality');
   const specialtyParam = searchParams.get('specialty');
-  const healingPathParam = searchParams.get('healing_path');
+  const healingPathParam = searchParams.get('healingPath'); // ✅ changed here
 
   const selectedModalities = modalityParam ? decodeURIComponent(modalityParam).split(',') : [];
   const selectedSpecialties = specialtyParam ? decodeURIComponent(specialtyParam).split(',') : [];
@@ -39,8 +39,8 @@ export default function TherapistList() {
       t.specialties?.some((spec) => selectedSpecialties.includes(spec));
     const matchesHealingPath =
       selectedHealingPaths.length === 0 ||
-      t.healing_paths?.some((path) => selectedHealingPaths.includes(path));
-    
+      t.healing_path?.some((path) => selectedHealingPaths.includes(path)); // ✅ this matches the supabase field
+
     return matchesModality && matchesSpecialty && matchesHealingPath;
   });
 
@@ -132,7 +132,7 @@ export default function TherapistList() {
           {allHealingPaths.map((path) => (
             <button
               key={path}
-              onClick={() => updateQuery('healing_path', path)}
+              onClick={() => updateQuery('healingPath', path)} // ✅ changed here
               className={`px-3 py-1 rounded-full border text-sm transition ${selectedHealingPaths.includes(path) ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-blue-300'}`}
             >
               {path}
@@ -163,4 +163,3 @@ export default function TherapistList() {
     </div>
   );
 }
-

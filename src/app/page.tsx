@@ -75,7 +75,7 @@ export default function LandingPage() {
           and <span className="text-green-400">soulful</span> — not clinical.
         </h1>
         <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
-          Meloa is the first platform where licensed therapists, creative guides, spiritual teachers, and cultural healers come together — to help you heal through somatic work, expression, ritual, and personalized guidance in a safe, supportive space.
+        Meloa is the first platform where <strong>licensed therapists</strong>, <strong>creative guides</strong>, <strong>spiritual teachers</strong>, and <strong>cultural healers</strong> come together — to help you heal through <strong>somatic work</strong>, <strong>expression</strong>, <strong>ritual</strong>, and <strong>personalized guidance</strong> in a safe, supportive space.
         </p>
 
         <div className="mt-8 flex justify-center space-x-4">
@@ -132,7 +132,7 @@ export default function LandingPage() {
 
       {/* Why Meloa (Typing Animation) */}
       <section className="bg-[#f5f7fa] py-20 px-6 text-center">
-        <h2 className="text-3xl font-bold mb-4">Why Meloa?</h2>
+        <h2 className="text-3xl font-bold mb-4">What Makes Meloa Different</h2>
         <p className="max-w-2xl mx-auto text-gray-700 mb-6">
           Traditional therapy isn’t for everyone. Meloa is for those seeking healing that feels <strong>creative</strong>, <strong>cultural</strong>, and <strong>soulful</strong>. From licensed professionals to spiritual guides, artists, and ancestral teachers — we honor the full spectrum of healing.
         </p>

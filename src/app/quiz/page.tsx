@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const questions = [
   {
@@ -62,11 +63,12 @@ const modalityMap = {
 };
 
 export default function QuizPage() {
+  const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showResult, setShowResult] = useState(false);
 
-  const handleAnswer = (option: string) => {
+  const handleAnswer = (option) => {
     const updatedAnswers = [...answers, option];
     setAnswers(updatedAnswers);
 
@@ -107,26 +109,55 @@ export default function QuizPage() {
       </div>
 
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
-        {!showResult ? (
-          <>
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 leading-snug">
-              {questions[currentStep].question}
-            </h2>
-            <div className="grid gap-3">
-              {questions[currentStep].options.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => handleAnswer(option)}
-                  className="border border-purple-500 text-purple-600 rounded-full px-4 py-2 hover:bg-purple-50 transition text-sm"
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <p className="text-sm text-gray-400 mt-6">Step {currentStep + 1} of {questions.length}</p>
-          </>
+        {!started ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-2xl font-bold text-purple-700 mb-4">✨ Find Your Healing Style</h1>
+            <p className="text-gray-700 mb-6">
+              This short, reflective journey will help match you with healing styles that resonate with your emotional and spiritual needs.
+            </p>
+            <button
+              onClick={() => setStarted(true)}
+              className="px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
+            >
+              Begin Journey
+            </button>
+          </motion.div>
+        ) : !showResult ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-xl font-semibold text-gray-900 mb-6 leading-snug">
+                {questions[currentStep].question}
+              </h2>
+              <div className="grid gap-3">
+                {questions[currentStep].options.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => handleAnswer(option)}
+                    className="border border-purple-500 text-purple-600 rounded-full px-4 py-2 hover:bg-purple-50 transition text-sm"
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              <p className="text-sm text-gray-400 mt-6">Step {currentStep + 1} of {questions.length}</p>
+            </motion.div>
+          </AnimatePresence>
         ) : (
-          <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-2xl font-bold text-purple-700 mb-4">💫 Your Healing Style</h2>
             <p className="text-gray-800 mb-6 leading-relaxed">
               Based on your answers, <span className="font-semibold">{therapy}</span> might be the most supportive for where you are right now.
@@ -138,10 +169,10 @@ export default function QuizPage() {
               }}
             >
               <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full hover:opacity-90 transition">
-                Browse Practitioners →
+                Browse Guides →
               </button>
             </Link>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

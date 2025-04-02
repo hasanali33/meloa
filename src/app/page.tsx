@@ -100,7 +100,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="text-center pt-40 pb-32 px-4 text-white relative z-10">
+      <section className="text-center pt-40 px-4 text-white relative z-10">
         <h1 className="text-5xl font-extrabold mb-6">
           Healing should feel <span className="text-pink-500">creative</span>, <span className="text-blue-400">human</span>,<br />
           and <span className="text-green-400">soulful</span> — not clinical.
@@ -108,19 +108,6 @@ export default function LandingPage() {
         <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
           Meloa is the first platform where <strong>licensed therapists</strong>, <strong>creative guides</strong>, <strong>spiritual teachers</strong>, and <strong>cultural healers</strong> come together — to help you heal through <strong>somatic work</strong>, <strong>expression</strong>, <strong>ritual</strong>, and <strong>personalized guidance</strong> in a safe, supportive space.
         </p>
-
-        <div className="mt-8 flex justify-center space-x-4">
-          <Link href="/quiz">
-            <button className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-              ✨ Start My Healing Journey
-            </button>
-          </Link>
-          <Link href="/therapists">
-            <button className="px-6 py-3 bg-white text-purple-600 border border-purple-600 rounded-lg hover:bg-purple-50 transition">
-              Browse Guides
-            </button>
-          </Link>
-        </div>
 
         {/* New Emotion-Based Dropdown */}
         <div className="mt-12 max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl text-gray-800 space-y-6">
@@ -138,10 +125,6 @@ export default function LandingPage() {
             ))}
           </select>
 
-          <p className="text-center text-sm text-gray-500">
-            Not sure where to start? <Link href="/quiz" className="underline text-purple-600">Take the quiz to discover your healing style.</Link>
-          </p>
-
           <button
             onClick={handleSearch}
             className="w-full mt-2 px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition"
@@ -150,6 +133,19 @@ export default function LandingPage() {
           </button>
         </div>
       </section>
+      <div className="mt-6 flex flex-col sm:flex-row justify-center pb-32 items-center gap-4">
+        <Link href="/quiz">
+          <button className="flex items-center gap-2 px-6 py-3 bg-white text-purple-600 border border-purple-600 rounded-full shadow hover:bg-purple-50 transition text-sm sm:text-base">
+            👉 Not sure where to start? <span className="underline">Take the Quiz</span>
+          </button>
+        </Link>
+        <Link href="/therapists">
+          <button className="flex items-center gap-2 px-6 py-3 bg-white text-purple-600 border border-purple-600 rounded-full shadow hover:bg-purple-50 transition text-sm sm:text-base">
+            👀 Wanna explore? <span className="underline">Browse Guides</span>
+          </button>
+        </Link>
+      </div>
+
 
       {/* Why Meloa (Typing Animation) */}
       <section className="bg-[#f5f7fa] py-20 px-6 text-center">

@@ -60,7 +60,7 @@ export default function TherapistProfile() {
             alt={therapist.full_name}
             className="w-32 h-32 rounded-full object-cover border-4 border-purple-200"
           />
-          <h1 className="text-4xl font-bold text-blue-700">{therapist.full_name}</h1>
+          <h1 className="text-3xl font-bold text-blue-700">{therapist.full_name}</h1>
           <p className="text-base text-gray-500 italic">
             {therapist.is_licensed ? 'Licensed Therapist' : 'Healing Practitioner (Non-Clinical)'}
           </p>
@@ -101,6 +101,10 @@ export default function TherapistProfile() {
                     <li key={idx}>{spec}</li>
                   ))}
                 </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-green-600 mb-1">Healing Path</h3>
+                <p>{therapist.healing_path || "No specific healing path selected"}</p>
               </div>
             </div>
           </section>

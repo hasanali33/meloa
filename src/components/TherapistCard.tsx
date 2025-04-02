@@ -1,10 +1,9 @@
-// TherapistCard.tsx
 import React from 'react';
 import Link from 'next/link';
 
 const TherapistCard = ({ therapist }) => {
   return (
-    <div className="bg-white rounded-3xl shadow-xl p-6 flex items-center justify-between max-w-5xl mx-auto mb-8">
+    <div className="bg-gradient-to-r from-purple-100 to-blue-50 rounded-3xl shadow-xl p-6 flex items-center justify-between max-w-5xl mx-auto mb-8 transition-transform hover:scale-105">
       {/* Profile Image */}
       <img
         src={therapist.profile_image_url || '/fallback-avatar.png'}
@@ -15,8 +14,8 @@ const TherapistCard = ({ therapist }) => {
       {/* Info Section */}
       <div className="flex-1 mx-6 space-y-2">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold text-gray-800">{therapist.full_name}</h2>
-          <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
+          <h2 className="text-2xl font-semibold text-gray-800">{therapist.full_name}</h2>
+          <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
             {therapist.licensed ? 'Licensed Therapist' : 'Healing Practitioner (Non-Clinical)'}
           </span>
         </div>
@@ -63,7 +62,7 @@ const TherapistCard = ({ therapist }) => {
           href={therapist.calendly_link}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 text-sm rounded-full hover:opacity-90"
+          className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 text-sm rounded-full hover:opacity-90 transition"
         >
           Book Session
         </a>
@@ -73,3 +72,4 @@ const TherapistCard = ({ therapist }) => {
 };
 
 export default TherapistCard;
+

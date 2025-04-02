@@ -15,8 +15,11 @@ export default function TherapistList() {
 
   const modalityParam = searchParams.get('modality');
   const specialtyParam = searchParams.get('specialty');
+  const healingPathParam = searchParams.get('healing_path');
+
   const selectedModalities = modalityParam ? decodeURIComponent(modalityParam).split(',') : [];
   const selectedSpecialties = specialtyParam ? decodeURIComponent(specialtyParam).split(',') : [];
+  const selectedHealingPaths = healingPathParam ? decodeURIComponent(healingPathParam).split(',') : [];
 
   useEffect(() => {
     async function fetchTherapists() {
@@ -34,7 +37,11 @@ export default function TherapistList() {
     const matchesSpecialty =
       selectedSpecialties.length === 0 ||
       t.specialties?.some((spec) => selectedSpecialties.includes(spec));
-    return matchesModality && matchesSpecialty;
+    const matchesHealingPath =
+      selectedHealingPaths.length === 0 ||
+      t.healing_paths?.some((path) => selectedHealingPaths.includes(path));
+    
+    return matchesModality && matchesSpecialty && matchesHealingPath;
   });
 
   const indexOfLast = currentPage * therapistsPerPage;
@@ -57,8 +64,17 @@ export default function TherapistList() {
     'Life Transitions', 'PTSD', 'LGBTQ+', 'Cultural Identity'
   ];
 
+  const allHealingPaths = [
+    'Somatic Healing',
+    'Creative Expression',
+    'Inner Child Work',
+    'Spiritual Healing',
+    'Cultural Healing',
+    'Mindfulness-Based Healing'
+  ];
+
   const updateQuery = (type, value) => {
-    const selected = type === 'modality' ? selectedModalities : selectedSpecialties;
+    const selected = type === 'modality' ? selectedModalities : type === 'specialty' ? selectedSpecialties : selectedHealingPaths;
     const updated = selected.includes(value)
       ? selected.filter((item) => item !== value)
       : [...selected, value];
@@ -70,7 +86,7 @@ export default function TherapistList() {
 
   return (
     <div className="relative min-h-screen">
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 -z-10">
         <img src="/bg-blobs.png" alt="Background" className="w-full h-full object-cover" />
       </div>
 
@@ -111,6 +127,19 @@ export default function TherapistList() {
           ))}
         </div>
 
+        {/* Healing Path Buttons */}
+        <div className="px-6 mb-4 flex flex-wrap gap-2 justify-center">
+          {allHealingPaths.map((path) => (
+            <button
+              key={path}
+              onClick={() => updateQuery('healing_path', path)}
+              className={`px-3 py-1 rounded-full border text-sm transition ${selectedHealingPaths.includes(path) ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-blue-300'}`}
+            >
+              {path}
+            </button>
+          ))}
+        </div>
+
         {/* Therapist Cards */}
         <div className="px-4 pb-12 space-y-8">
           {currentTherapists.map((therapist) => (
@@ -134,3 +163,4 @@ export default function TherapistList() {
     </div>
   );
 }
+

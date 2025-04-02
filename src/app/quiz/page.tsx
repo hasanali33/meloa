@@ -62,6 +62,13 @@ const modalityMap = {
   ]
 };
 
+const slugMap = {
+  'Creative Expression & Art-Based Healing': 'creative-expression',
+  'Somatic Therapy & Body-Based Work': 'somatic',
+  'Inner Child & Parts Work': 'inner-child',
+  'Reflective Healing & Talk-Based Support': 'reflective',
+};
+
 export default function QuizPage() {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -96,6 +103,7 @@ export default function QuizPage() {
 
   const therapy = recommendTherapy();
   const tags = modalityMap[therapy];
+  const slug = slugMap[therapy];
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#d5eefe] relative px-4">
@@ -162,16 +170,22 @@ export default function QuizPage() {
             <p className="text-gray-800 mb-6 leading-relaxed">
               Based on your answers, <span className="font-semibold">{therapy}</span> might be the most supportive for where you are right now.
             </p>
-            <Link
-              href={{
-                pathname: '/therapists',
-                query: { modality: tags.join(',') },
-              }}
-            >
-              <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full hover:opacity-90 transition">
-                Browse Guides →
-              </button>
-            </Link>
+            <div className="flex flex-col gap-4">
+              <Link
+                href={{ pathname: '/therapists', query: { modality: tags.join(',') } }}
+              >
+                <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full hover:opacity-90 transition">
+                  Browse Guides →
+                </button>
+              </Link>
+              <Link
+                href={`/healing/${slug}`}
+              >
+                <button className="px-6 py-3 border border-purple-600 text-purple-600 rounded-full hover:bg-purple-50 transition">
+                  Learn More About This Path →
+                </button>
+              </Link>
+            </div>
           </motion.div>
         )}
       </div>

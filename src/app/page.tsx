@@ -75,13 +75,13 @@ export default function LandingPage() {
           and <span className="text-green-400">soulful</span> — not clinical.
         </h1>
         <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
-          Meloa is the first platform where licensed therapists, creative guides, spiritual teachers, and cultural healers come together — to help you heal through somatic work, expression, ritual, and more.
+          Meloa is the first platform where licensed therapists, creative guides, spiritual teachers, and cultural healers come together — to help you heal through somatic work, expression, ritual, and personalized guidance in a safe, supportive space.
         </p>
 
         <div className="mt-8 flex justify-center space-x-4">
           <Link href="/quiz">
             <button className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-              ✨ Find Your Healing Match
+              ✨ Start My Healing Journey
             </button>
           </Link>
           <Link href="/therapists">

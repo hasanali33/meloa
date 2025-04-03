@@ -18,48 +18,44 @@ export default function BookingForm({ therapistId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Insert booking
+
     const { error } = await supabase.from('booking_requests').insert({
       therapist_id: therapistId,
       client_name: formData.clientName,
       client_email: formData.clientEmail,
       message: formData.message,
     });
-  
+
     if (!error) {
-      // Get therapist's info
       const { data: therapist, error: fetchError } = await supabase
         .from('therapists')
         .select('email, full_name')
         .eq('id', therapistId)
         .single();
-  
+
       if (!fetchError && therapist?.email) {
-        // Send notification email
         await fetch('/api/sendBookingEmail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              therapistEmail: therapist.email,
-              therapistName: therapist.full_name,
-              clientName: formData.clientName,
-              clientEmail: formData.clientEmail,
-            }),
-          });          
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            therapistEmail: therapist.email,
+            therapistName: therapist.full_name,
+            clientName: formData.clientName,
+            clientEmail: formData.clientEmail,
+          }),
+        });
       }
-  
+
       setSubmitted(true);
     } else {
       console.error('Booking error:', error.message);
     }
   };
-  
 
   if (submitted) {
     return (
-      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg border border-purple-100">
-        <p className="text-green-600 text-center text-lg font-medium">
+      <div className="p-4 rounded-xl shadow-md border border-purple-100 bg-white text-center">
+        <p className="text-green-600 text-sm font-medium">
           ✅ Request sent! The therapist will get back to you soon.
         </p>
       </div>
@@ -67,52 +63,55 @@ export default function BookingForm({ therapistId }) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-2xl border border-purple-100">
-      <h2 className="text-2xl font-bold text-purple-700 mb-4">💌 Book a Session</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="text-sm text-gray-700 font-medium">Your Name</label>
-          <input
+    <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm bg-white rounded-2xl p-4 shadow-md border border-gray-100 space-y-4"
+        >
+        <div className="space-y-1">
+            <label className="text-xs text-gray-700 font-medium">Name</label>
+            <input
             type="text"
             name="clientName"
             value={formData.clientName}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          />
+            placeholder="Your Name"
+            className="w-full px-3 py-2 rounded-md bg-[#fdfcfa] border border-gray-200 shadow-inner text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
+            />
         </div>
 
-        <div>
-          <label className="text-sm text-gray-700 font-medium">Your Email</label>
-          <input
+        <div className="space-y-1">
+            <label className="text-xs text-gray-700 font-medium">Email</label>
+            <input
             type="email"
             name="clientEmail"
             value={formData.clientEmail}
             onChange={handleChange}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          />
+            placeholder="your@email.com"
+            className="w-full px-3 py-2 rounded-md bg-[#fdfcfa] border border-gray-200 shadow-inner text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
+            />
         </div>
 
-        <div>
-          <label className="text-sm text-gray-700 font-medium">Describe what you're looking for</label>
-          <textarea
+        <div className="space-y-1">
+            <label className="text-xs text-gray-700 font-medium">Message</label>
+            <textarea
             name="message"
             value={formData.message}
             onChange={handleChange}
-            rows={4}
+            rows={3}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-          />
+            placeholder="How can I support you?"
+            className="w-full px-3 py-2 rounded-md bg-[#fdfcfa] border border-gray-200 shadow-inner text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
+            />
         </div>
 
         <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold py-3 rounded-lg hover:opacity-90 transition"
+            type="submit"
+            className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium py-2 rounded-lg hover:opacity-90 transition text-sm shadow"
         >
-          ✨ Send Request
+            Send Message
         </button>
-      </form>
-    </div>
+        </form>
   );
-}
+} 

@@ -115,7 +115,7 @@ export default function LandingPage() {
             🌱 What's on your heart today?
           </h4>
           <select
-            className="w-full p-3 border rounded-md"
+            className="w-full p-3 border-2 border-black rounded-md"
             value={selectedSpecialty}
             onChange={(e) => setSelectedSpecialty(e.target.value)}
           >
@@ -177,7 +177,7 @@ export default function LandingPage() {
           Explore different healing journeys — from body-based to creative, ancestral to spiritual.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto ">
           {[{
             emoji: '🌿', title: 'Somatic Healing', href: '/healing/somatic', desc: 'Reconnect with your body and release stored tension.'
           }, {
@@ -194,7 +194,7 @@ export default function LandingPage() {
             <Link
               key={path.href}
               href={path.href}
-              className="bg-white border rounded-xl p-6 text-left shadow hover:shadow-md transition"
+              className="bg-white border rounded-xl p-6 text-left shadow hover:shadow-md transition border-1.5 border-black"
             >
               <div className="text-3xl mb-2">{path.emoji}</div>
               <h3 className="text-lg font-semibold mb-1">{path.title}</h3>

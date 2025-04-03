@@ -101,13 +101,20 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="text-center pt-40 px-4 text-white relative z-10">
-        <h1 className="text-5xl font-extrabold mb-6">
-          Healing should feel <span className="text-pink-500">creative</span>, <span className="text-blue-400">human</span>,<br />
-          and <span className="text-green-400">soulful</span> — not clinical.
-        </h1>
-        <p className="mt-4 text-lg max-w-xl mx-auto text-white/90">
-          Meloa is the first platform where <strong>licensed therapists</strong>, <strong>creative guides</strong>, <strong>spiritual teachers</strong>, and <strong>cultural healers</strong> come together — to help you heal through <strong>somatic work</strong>, <strong>expression</strong>, <strong>ritual</strong>, and <strong>personalized guidance</strong> in a safe, supportive space.
-        </p>
+      <h1 className="text-4xl md:text-5xl font-bold text-white text-center">
+        Healing should feel <span className="text-pink-500">creative</span>, <span className="text-blue-400">human</span>,<br />
+        and <span className="text-green-400">soulful</span> — not clinical.
+      </h1>
+
+      <p className="mt-4 text-lg max-w-xl mx-auto text-white/90 text-center leading-relaxed">
+        Meloa connects you with <strong>licensed therapists</strong>, <strong>creative guides</strong>, and <strong>cultural healers</strong> who help you heal through <strong>movement</strong>, <strong>expression</strong>, and <strong>soul work</strong>.
+        <br />
+        <span className="block mt-3">Because therapy isn’t the only path. You deserve something that fits.</span>
+      </p>
+
+      <p className="mt-6 text-base max-w-lg mx-auto text-white/70 text-center">
+        Your way. Your vibe. Your healing.
+      </p>
 
         {/* New Emotion-Based Dropdown */}
         <div className="mt-12 max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl text-gray-800 space-y-6">
@@ -148,7 +155,7 @@ export default function LandingPage() {
 
 
       {/* Why Meloa (Typing Animation) */}
-      <section className="bg-[#f5f7fa] py-20 px-6 text-center">
+      <section className="bg-[#f9f7f3] py-20 px-6 text-center">
         <h2 className="text-3xl font-bold mb-4">What Makes Meloa Different</h2>
         <p className="max-w-2xl mx-auto text-gray-700 mb-6">
           Traditional therapy isn’t for everyone. Meloa is for those seeking healing that feels <strong>creative</strong>, <strong>cultural</strong>, and <strong>soulful</strong>. From licensed professionals to spiritual guides, artists, and ancestral teachers — we honor the full spectrum of healing.
@@ -169,93 +176,154 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Visual Strip – Healing Imagery */}
+      <section className="bg-[#f9f7f3] w-full py-12 px-4 bg-[#f8fafc] flex justify-center">
+        <div className="w-full max-w-5xl">
+          <div className="max-w-4xl mx-auto overflow-hidden rounded-xl shadow-lg">
+          <img
+            src="/healing-header.png"
+            alt="Healing through movement, creativity, and mindfulness"
+            className="w-full object-cover h-[260px] md:h-[300px]"
+          />
+        </div>
+          {/* Optional caption */}
+          {/* <p className="text-sm text-gray-500 text-center mt-3 italic">Real ways people heal — in their own rhythm.</p> */}
+        </div>
+      </section>
+
 
       {/* Healing Paths Grid */}
-      <section className="px-6 py-20 text-center bg-white">
-        <h2 className="text-3xl font-bold mb-6">What Kind of Healing Speaks to You?</h2>
-        <p className="text-gray-600 mb-10 max-w-2xl mx-auto">
-          Explore different healing journeys — from body-based to creative, ancestral to spiritual.
-        </p>
+      <section className="bg-white py-24 px-6 text-center">
+      <h2 className="text-3xl font-bold mb-6">Your Healing, Your Way</h2>
+      <p className="text-gray-600 mb-10 max-w-2xl mx-auto">
+        Choose what feels right—somatic, expressive, ancestral, or spiritual. Meloa helps you explore healing that actually resonates.
+      </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto ">
-          {[{
-            emoji: '🌿', title: 'Somatic Healing', href: '/healing/somatic', desc: 'Reconnect with your body and release stored tension.'
-          }, {
-            emoji: '🎨', title: 'Creative Expression', href: '/healing/creative-expression', desc: 'Heal through painting, music, dance, and poetry.'
-          }, {
-            emoji: '🧸', title: 'Inner Child Work', href: '/healing/inner-child', desc: 'Nurture the younger parts of you that still need love.'
-          }, {
-            emoji: '🔮', title: 'Spiritual Healing', href: '/healing/spiritual', desc: 'Explore intuitive, energetic, and ancestral practices.'
-          }, {
-            emoji: '🌍', title: 'Cultural Healing', href: '/healing/cultural', desc: 'Honor your roots and reconnect with your lineage.'
-          }, {
-            emoji: '🧘‍♀️', title: 'Mindfulness-Based Healing', href: '/healing/mindfulness', desc: 'Breathe, slow down, and return to the present moment.'
-          }].map((path) => (
-            <Link
-              key={path.href}
-              href={path.href}
-              className="bg-white border rounded-xl p-6 text-left shadow hover:shadow-md transition border-1.5 border-black"
-            >
-              <div className="text-3xl mb-2">{path.emoji}</div>
-              <h3 className="text-lg font-semibold mb-1">{path.title}</h3>
-              <p className="text-gray-600 text-sm">{path.desc}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {[{
+          emoji: '🌿', title: 'Somatic Healing', href: '/healing/somatic', desc: 'Reconnect with your body and release stored tension.'
+        }, {
+          emoji: '🎨', title: 'Creative Expression', href: '/healing/creative-expression', desc: 'Heal through painting, music, dance, and poetry.'
+        }, {
+          emoji: '🧸', title: 'Inner Child Work', href: '/healing/inner-child', desc: 'Nurture the younger parts of you that still need love.'
+        }, {
+          emoji: '🔮', title: 'Spiritual Healing', href: '/healing/spiritual', desc: 'Explore intuitive, energetic, and ancestral practices.'
+        }, {
+          emoji: '🌍', title: 'Cultural Healing', href: '/healing/cultural', desc: 'Honor your roots and reconnect with your lineage.'
+        }, {
+          emoji: '🧘‍♀️', title: 'Mindfulness-Based Healing', href: '/healing/mindfulness', desc: 'Breathe, slow down, and return to the present moment.'
+        }].map((path) => (
+          <Link
+            key={path.href}
+            href={path.href}
+            className="bg-white border rounded-xl p-6 text-left shadow hover:shadow-md transition border-1.5 border-black"
+          >
+            <div className="text-3xl mb-2">{path.emoji}</div>
+            <h3 className="text-lg font-semibold mb-1">{path.title}</h3>
+            <p className="text-gray-600 text-sm">{path.desc}</p>
+          </Link>
+        ))}
+      </div>
+    </section>
 
-      {/* Keep the rest of your sections the same */}
-      {/* How It Works, Features, Practitioner CTA, Disclaimer, Testimonials, Footer */}
+    {/* How It Works */}
+    <section className="bg-[#f3f4f6] py-24 px-6 text-center">
+      {/* Top Headline */}
+      <h2 className="text-3xl md:text-4xl font-bold mb-2">You don't need to be fixed.</h2>
+      <h3 className="text-xl md:text-2xl text-gray-600 mb-12">You just need the right guide.</h3>
 
-      {/* How It Works */}
-      <section className="bg-white px-6 pt-10 pb-20 text-center">
-        <h3 className="text-2xl font-bold mb-12">How Meloa Works</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-          <div>
-            <h4 className="text-lg font-semibold mb-2">1. Discover Your Style of Healing</h4>
-            <p className="text-sm text-gray-600">We’ll gently guide you through questions to understand your emotional style..</p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-2">2. Get Matched</h4>
-            <p className="text-sm text-gray-600">We’ll show you licensed therapists and soulful guides aligned with your needs.</p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-2">3. Book a Session</h4>
-            <p className="text-sm text-gray-600">Start your journey with someone who truly gets you.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="bg-[#f7f9fc] py-24 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-          {[{
-            title: 'Modality-First Healing',
-            desc: 'Search based on what feels right: somatic, journaling, parts work, inner child, or creative expression.',
-            icon: '/palette.png',
-          }, {
-            title: 'Licensed + Trusted Guides',
-            desc: 'Connect with licensed therapists or carefully vetted non-clinical healing practitioners.',
-            icon: '/calendar.png',
-          }, {
-            title: 'Safe, Soulful Experiences',
-            desc: 'Healing should feel human — not clinical. Our platform is built on emotional resonance, not checklists.',
-            icon: '/healing.png',
-          }].map(({ title, desc, icon }) => (
-            <div key={title} className="text-center">
-              <Image src={icon} alt={title} width={64} height={64} className="mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{title}</h3>
-              <p className="text-sm text-gray-600 max-w-xs mx-auto">{desc}</p>
+      {/* 3-Step Process */}
+      <div className="flex flex-col md:flex-row justify-center items-start md:items-center gap-12 max-w-5xl mx-auto text-left">
+        {/* Step 1 */}
+        <div className="flex-1">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300">
+              <span className="text-2xl">🌀</span>
             </div>
-          ))}
+          </div>
+          <h4 className="text-lg font-semibold flex justify-center items-center gap-2">
+            <span className="text-yellow-500 text-xl">1</span> Feel something
+          </h4>
+          <p className="mt-2 text-sm text-gray-600 text-center max-w-xs mx-auto">
+            Search by how you want a heal — journaling, parts work, grief, or creative blocks. No wrong doors.
+          </p>
         </div>
-      </section>
+
+        {/* Step 2 */}
+        <div className="flex-1">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300">
+              <span className="text-2xl">🌱</span>
+            </div>
+          </div>
+          <h4 className="text-lg font-semibold flex justify-center items-center gap-2">
+            <span className="text-yellow-500 text-xl">2</span> Meet your guide
+          </h4>
+          <p className="mt-2 text-sm text-gray-600 text-center max-w-xs mx-auto">
+            We'll match you with someone who gets you — therapist or trusted guide.
+          </p>
+        </div>
+
+        {/* Step 3 */}
+        <div className="flex-1">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-300">
+              <span className="text-2xl">💬</span>
+            </div>
+          </div>
+          <h4 className="text-lg font-semibold flex justify-center items-center gap-2">
+            <span className="text-gray-700 text-xl">3</span> DM. Book. Heal.
+          </h4>
+          <p className="mt-2 text-sm text-gray-600 text-center max-w-xs mx-auto">
+            Start your journey. Message them, book, and heal.
+          </p>
+        </div>
+      </div>
+
+      {/* Downward Arrow Divider */}
+      <div className="flex justify-center my-12">
+        <div className="w-px h-6 bg-gray-300 relative">
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2">
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Why Meloa Feels Different */}
+      <h3 className="text-2xl md:text-3xl font-bold mb-10">Why Meloa Feels Different</h3>
+        {/* Card 1 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+          <div className="text-3xl mb-3">🎨</div>
+          <h4 className="font-semibold text-lg mb-1">Modality-First</h4>
+          <p className="text-sm text-gray-600">Choose how you heal</p>
+        </div>
+
+        {/* Card 2 */}
+        <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+          <div className="text-3xl mb-3">🌿</div>
+          <h4 className="font-semibold text-lg mb-1">Not Just Titles</h4>
+          <p className="text-sm text-gray-600">Fit over credentials</p>
+        </div>
+
+        {/* Card 3 */}
+        <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+          <div className="text-3xl mb-3">🧭</div>
+          <h4 className="font-semibold text-lg mb-1">Feels Human</h4>
+          <p className="text-sm text-gray-600">Not clinical, not cold</p>
+        </div>
+      </div>
+    </section>
+
+
 
       {/* Practitioner CTA */}
-      <section className="bg-white py-24 px-6 text-center">
+      <section className="bg-[#fef3f7] py-20 px-6 text-center">
         <h3 className="text-2xl font-bold mb-6">For Healers Who Practice Differently</h3>
         <p className="text-lg max-w-3xl mx-auto text-gray-600">
-          Meloa is for therapists and healers who use somatic practices, parts work, journaling, inner child work, and creative techniques — but feel boxed in by traditional platforms. If you’re ready to show up as your full self, this is your space.
+          Meloa is where therapists and healers—using somatic, creative, and alternative techniques—can break free from the norms and truly show up as their full selves.
         </p>
         <Link href="/signup">
           <button className="mt-6 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
@@ -263,6 +331,7 @@ export default function LandingPage() {
           </button>
         </Link>
       </section>
+
 
       {/* Disclaimer */}
       <section className="bg-[#f1f5f9] py-12 px-6 text-center text-sm text-gray-600">
@@ -272,7 +341,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-[#f7f9fc] py-20 px-6 text-center">
+      <section className="bg-[#f9f7f3] py-20 px-6 text-center">
         <h3 className="text-2xl font-bold mb-12">Stories of Real Healing</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[{

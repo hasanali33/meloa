@@ -317,8 +317,6 @@ export default function LandingPage() {
       </div>
     </section>
 
-
-
       {/* Practitioner CTA */}
       <section className="bg-[#fef3f7] py-20 px-6 text-center">
         <h3 className="text-2xl font-bold mb-6">For Healers Who Practice Differently</h3>

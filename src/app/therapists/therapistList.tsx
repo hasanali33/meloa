@@ -173,7 +173,7 @@ export default function TherapistList() {
           </details>
 
           <details className="bg-white/80 rounded-md shadow p-4 transition-all duration-300 ease-in-out" open={selectedSpecialties.length > 0}>
-            <summary className="font-semibold cursor-pointer">🌿 Issues / Goals</summary>
+            <summary className="font-semibold cursor-pointer">🌿 Goals</summary>
             <div className="flex flex-wrap gap-2 mt-3">
               {allSpecialties.map((specialty) => (
                 <button

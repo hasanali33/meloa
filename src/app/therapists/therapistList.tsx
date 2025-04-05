@@ -16,7 +16,7 @@ export default function TherapistList() {
 
   const modalityParam = searchParams.get('modality');
   const specialtyParam = searchParams.get('specialty');
-  const healingPathParam = searchParams.get('healingPath'); // ✅ changed here
+  const healingPathParam = searchParams.get('healingPath');
 
   const selectedModalities = modalityParam ? decodeURIComponent(modalityParam).split(',') : [];
   const selectedSpecialties = specialtyParam ? decodeURIComponent(specialtyParam).split(',') : [];
@@ -40,7 +40,7 @@ export default function TherapistList() {
       t.specialties?.some((spec) => selectedSpecialties.includes(spec));
     const matchesHealingPath =
       selectedHealingPaths.length === 0 ||
-      t.healing_path?.some((path) => selectedHealingPaths.includes(path)); // ✅ this matches the supabase field
+      t.healing_path?.some((path) => selectedHealingPaths.includes(path));
 
     return matchesModality && matchesSpecialty && matchesHealingPath;
   });
@@ -85,6 +85,13 @@ export default function TherapistList() {
     setCurrentPage(1);
   };
 
+  const clearFilters = () => {
+    router.push('/therapists');
+    setCurrentPage(1);
+  };
+
+  const hasFilters = selectedModalities.length > 0 || selectedSpecialties.length > 0 || selectedHealingPaths.length > 0;
+
   return (
     <div className="relative min-h-screen">
       <div className="absolute inset-0 -z-10">
@@ -92,11 +99,10 @@ export default function TherapistList() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Navbar */}
         <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
           <div className="flex items-center space-x-8 relative">
             <Link href="/">
-            <h1 className="text-3xl font-bold">meloa</h1>
+              <h1 className="text-3xl font-bold">meloa</h1>
             </Link>
             <Link href="/about">
               <span className="hover:underline cursor-pointer">About</span>
@@ -135,59 +141,90 @@ export default function TherapistList() {
 
         <h2 className="text-4xl font-extrabold text-center text-white my-8">Meet Your Healing Guides</h2>
 
-        {/* Modality Buttons */}
-        <div className="px-6 mb-4 flex flex-wrap gap-2 justify-center">
-          {allModalities.map((modality) => (
+        {hasFilters && (
+          <div className="flex justify-center mb-4">
             <button
-              key={modality}
-              onClick={() => updateQuery('modality', modality)}
-              className={`px-3 py-1 rounded-full border text-sm transition ${selectedModalities.includes(modality) ? 'bg-purple-600 text-white' : 'bg-white text-purple-600 border-purple-300'}`}
+              onClick={clearFilters}
+              className="text-sm underline text-white hover:text-pink-200 transition"
             >
-              {modality}
+              ✕ Clear All Filters
             </button>
-          ))}
+          </div>
+        )}
+
+        <div className="px-6 mb-8 space-y-4 max-w-3xl mx-auto">
+          <details className="bg-white/80 rounded-md shadow p-4 transition-all duration-300 ease-in-out" open={selectedModalities.length > 0}>
+            <summary className="font-semibold cursor-pointer">🧘 Modalities</summary>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {allModalities.map((modality) => (
+                <button
+                  key={modality}
+                  onClick={() => updateQuery('modality', modality)}
+                  className={`px-3 py-1 rounded-full border text-sm transition ${
+                    selectedModalities.includes(modality)
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-white text-purple-600 border-purple-300'
+                  }`}
+                >
+                  {modality}
+                </button>
+              ))}
+            </div>
+          </details>
+
+          <details className="bg-white/80 rounded-md shadow p-4 transition-all duration-300 ease-in-out" open={selectedSpecialties.length > 0}>
+            <summary className="font-semibold cursor-pointer">🌿 Issues / Goals</summary>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {allSpecialties.map((specialty) => (
+                <button
+                  key={specialty}
+                  onClick={() => updateQuery('specialty', specialty)}
+                  className={`px-3 py-1 rounded-full border text-sm transition ${
+                    selectedSpecialties.includes(specialty)
+                      ? 'bg-pink-500 text-white'
+                      : 'bg-white text-pink-500 border-pink-300'
+                  }`}
+                >
+                  {specialty}
+                </button>
+              ))}
+            </div>
+          </details>
+
+          <details className="bg-white/80 rounded-md shadow p-4 transition-all duration-300 ease-in-out" open={selectedHealingPaths.length > 0}>
+            <summary className="font-semibold cursor-pointer">🌀 Healing Paths</summary>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {allHealingPaths.map((path) => (
+                <button
+                  key={path}
+                  onClick={() => updateQuery('healingPath', path)}
+                  className={`px-3 py-1 rounded-full border text-sm transition ${
+                    selectedHealingPaths.includes(path)
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-blue-600 border-blue-300'
+                  }`}
+                >
+                  {path}
+                </button>
+              ))}
+            </div>
+          </details>
         </div>
 
-        {/* Specialty Buttons */}
-        <div className="px-6 mb-8 flex flex-wrap gap-2 justify-center">
-          {allSpecialties.map((specialty) => (
-            <button
-              key={specialty}
-              onClick={() => updateQuery('specialty', specialty)}
-              className={`px-3 py-1 rounded-full border text-sm transition ${selectedSpecialties.includes(specialty) ? 'bg-pink-500 text-white' : 'bg-white text-pink-500 border-pink-300'}`}
-            >
-              {specialty}
-            </button>
-          ))}
-        </div>
-
-        {/* Healing Path Buttons */}
-        <div className="px-6 mb-4 flex flex-wrap gap-2 justify-center">
-          {allHealingPaths.map((path) => (
-            <button
-              key={path}
-              onClick={() => updateQuery('healingPath', path)} // ✅ changed here
-              className={`px-3 py-1 rounded-full border text-sm transition ${selectedHealingPaths.includes(path) ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border-blue-300'}`}
-            >
-              {path}
-            </button>
-          ))}
-        </div>
-
-        {/* Therapist Cards */}
         <div className="px-4 pb-12 space-y-8">
           {currentTherapists.map((therapist) => (
             <TherapistCard key={therapist.id} therapist={therapist} />
           ))}
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-center space-x-2 mb-16">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
               onClick={() => paginate(index + 1)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition ${currentPage === index + 1 ? 'bg-white text-purple-600' : 'bg-purple-600 text-white hover:bg-purple-700'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                currentPage === index + 1 ? 'bg-white text-purple-600' : 'bg-purple-600 text-white hover:bg-purple-700'
+              }`}
             >
               {index + 1}
             </button>

@@ -1,8 +1,9 @@
 'use client';
 
-import { createBrowserClient } from '@supabase/ssr';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createBrowserClient } from '@supabase/ssr';
+import { useRouter } from 'next/navigation';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [supabase] = useState(() =>
@@ -18,3 +19,4 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     </SessionContextProvider>
   );
 }
+

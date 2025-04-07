@@ -30,14 +30,22 @@ export default function TherapistProfileEditor({ user }) {
 
   useEffect(() => {
     async function fetchTherapist() {
+      console.log('🔍 Logged in user ID:', user.id);
+
       const { data, error } = await supabase
         .from('therapists')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle(); // Safely handles "no match" cases
 
-      if (error) console.error(error);
-      else {
+      if (error) {
+        console.error('❌ Supabase error:', error);
+      }
+
+      if (!data) {
+        console.warn('⚠️ No therapist profile found for this user.');
+        setTherapist(null);
+      } else {
         setTherapist({
           ...data,
           modalities: data.modalities || [],
@@ -45,6 +53,7 @@ export default function TherapistProfileEditor({ user }) {
           vibe_tags: data.vibe_tags || [],
         });
       }
+
       setLoading(false);
     }
 
@@ -73,12 +82,12 @@ export default function TherapistProfileEditor({ user }) {
     const { error } = await supabase
       .from('therapists')
       .update({
-        full_name: therapist.full_name,
-        bio: therapist.bio,
-        calendly_link: therapist.calendly_link,
-        modalities: therapist.modalities,
-        specialties: therapist.specialties,
-        vibe_tags: therapist.vibe_tags,
+        full_name: therapist?.full_name,
+        bio: therapist?.bio,
+        calendly_link: therapist?.calendly_link,
+        modalities: therapist?.modalities,
+        specialties: therapist?.specialties,
+        vibe_tags: therapist?.vibe_tags,
       })
       .eq('user_id', user.id);
 
@@ -92,8 +101,19 @@ export default function TherapistProfileEditor({ user }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[200px] flex items-center justify-center">
         <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
+      </div>
+    );
+  }
+
+  if (!therapist) {
+    return (
+      <div className="text-center mt-10 text-gray-600">
+        <p className="text-lg">No therapist profile found for your account.</p>
+        <p className="text-sm mt-2 text-purple-700">
+          You may need to complete onboarding or create your profile manually.
+        </p>
       </div>
     );
   }
@@ -111,7 +131,7 @@ export default function TherapistProfileEditor({ user }) {
           <input
             type="text"
             name="full_name"
-            value={therapist.full_name || ''}
+            value={therapist?.full_name || ''}
             onChange={handleChange}
             placeholder="Your full name"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -125,7 +145,7 @@ export default function TherapistProfileEditor({ user }) {
           </label>
           <textarea
             name="bio"
-            value={therapist.bio || ''}
+            value={therapist?.bio || ''}
             onChange={handleChange}
             placeholder="Tell us a bit about your background..."
             rows={4}
@@ -141,7 +161,7 @@ export default function TherapistProfileEditor({ user }) {
           <input
             type="text"
             name="calendly_link"
-            value={therapist.calendly_link || ''}
+            value={therapist?.calendly_link || ''}
             onChange={handleChange}
             placeholder="https://calendly.com/your-link"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -153,7 +173,7 @@ export default function TherapistProfileEditor({ user }) {
           title="🎨 Modalities"
           name="modalities"
           options={modalityOptions}
-          selected={therapist.modalities}
+          selected={therapist?.modalities}
           onChange={(e) => handleMultiSelect(e, 'modalities')}
         />
 
@@ -162,7 +182,7 @@ export default function TherapistProfileEditor({ user }) {
           title="💖 Specialties"
           name="specialties"
           options={specialtyOptions}
-          selected={therapist.specialties}
+          selected={therapist?.specialties}
           onChange={(e) => handleMultiSelect(e, 'specialties')}
         />
 
@@ -171,7 +191,7 @@ export default function TherapistProfileEditor({ user }) {
           title="🌿 Vibe Tags"
           name="vibe_tags"
           options={vibeTagOptions}
-          selected={therapist.vibe_tags}
+          selected={therapist?.vibe_tags}
           onChange={(e) => handleMultiSelect(e, 'vibe_tags')}
         />
 
@@ -190,7 +210,7 @@ export default function TherapistProfileEditor({ user }) {
   );
 }
 
-// Reusable checkbox group component
+// ✅ Safe reusable checkbox group
 function CheckboxGroup({ title, name, options, selected = [], onChange }) {
   return (
     <fieldset className="space-y-1">
@@ -202,7 +222,7 @@ function CheckboxGroup({ title, name, options, selected = [], onChange }) {
               type="checkbox"
               name={name}
               value={opt}
-              checked={(selected || []).includes(opt)}
+              checked={selected?.includes(opt)}
               onChange={onChange}
               className="accent-purple-600"
             />

@@ -9,6 +9,10 @@ export default function DailyVideoCall({ roomUrl }: { roomUrl: string }) {
   useEffect(() => {
     if (!roomUrl || !callRef.current) return
 
+    // If iframe already exists in the container, don't create another
+    const existingIframe = callRef.current.querySelector('iframe')
+    if (existingIframe) return
+
     const frame = DailyIframe.createFrame(callRef.current, {
       showLeaveButton: true,
       iframeStyle: {
@@ -28,6 +32,7 @@ export default function DailyVideoCall({ roomUrl }: { roomUrl: string }) {
 
   return (
     <div className="w-full h-screen bg-white">
+        {roomUrl}
       <div ref={callRef} className="w-full h-full" />
     </div>
   )

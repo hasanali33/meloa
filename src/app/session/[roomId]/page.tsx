@@ -6,7 +6,7 @@ import { supabase } from '../../../../lib/supabaseClient'
 import DailyVideoCall from '@/components/DailyVideoCall'
 
 export default function SessionPage() {
-  const { id } = useParams()
+  const { roomId } = useParams()
   const router = useRouter()
   const [roomUrl, setRoomUrl] = useState('')
   const [loading, setLoading] = useState(true)
@@ -20,7 +20,7 @@ export default function SessionPage() {
       const { data, error } = await supabase
         .from('sessions')
         .select('*')
-        .eq('id', id)
+        .eq('daily_room_url', `https://meloa.daily.co/${roomId}`)
         .single()
 
       if (error || !data) {
@@ -43,7 +43,7 @@ export default function SessionPage() {
     }
 
     fetchSession()
-  }, [id, router])
+  }, [roomId, router])
 
   if (loading) return <p className="text-center mt-20">Loading session...</p>
   if (error) return <p className="text-center mt-20 text-red-500">{error}</p>

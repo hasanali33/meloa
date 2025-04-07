@@ -1,14 +1,12 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import TherapistProfileEditor from '../../components/TherapistProfileEditor';
-import BookingRequests from '../../components/BookingRequests';
-import MessagingPanel from '../../components/MessagingPanel';
 import { useUser } from '@supabase/auth-helpers-react';
-import { supabase } from '../../../lib/supabaseClient'; // Make sure you have supabase client setup
+import { supabase } from '../../../lib/supabaseClient';
+import TherapistProfileEditor from '../../components/TherapistProfileEditor';
+import UpcomingSessions from '../../components/UpcomingSessions';
+import MessagesDashboard from '../../components/MessagesDashboard';
 
-export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState<'requests' | 'messages' | 'profile'>('requests');
+export default function HealerDashboard() {
   const user = useUser();
 
   if (!user) {
@@ -20,16 +18,14 @@ export default function DashboardPage() {
   }
 
   const handleLogout = async () => {
-    await supabase.auth.signOut(); // Sign out the user
-    window.location.href = '/'; // Redirect to login page after logout
+    await supabase.auth.signOut();
+    window.location.href = '/';
   };
 
   return (
-    <div className="min-h-screen px-6 py-10 bg-gradient-to-br from-purple-50 to-blue-50">
-      <h1 className="text-3xl font-bold text-center text-blue-800 mb-6">📬 Your Dashboard</h1>
-
-      {/* Logout Button */}
-      <div className="flex justify-end mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-6 space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-blue-800">🦜 Healer Dashboard</h1>
         <button
           onClick={handleLogout}
           className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
@@ -38,50 +34,30 @@ export default function DashboardPage() {
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex justify-center gap-4 mb-8">
-        <button
-          onClick={() => setActiveTab('requests')}
-          className={`px-4 py-2 rounded-full font-medium transition ${
-            activeTab === 'requests'
-              ? 'bg-purple-600 text-white'
-              : 'bg-white text-purple-600 border border-purple-300'
-          }`}
-        >
-          Requests
-        </button>
-        <button
-          onClick={() => setActiveTab('messages')}
-          className={`px-4 py-2 rounded-full font-medium transition ${
-            activeTab === 'messages'
-              ? 'bg-purple-600 text-white'
-              : 'bg-white text-purple-600 border border-purple-300'
-          }`}
-        >
-          Messages
-        </button>
-        <button
-          onClick={() => setActiveTab('profile')}
-          className={`px-4 py-2 rounded-full font-medium transition ${
-            activeTab === 'profile'
-              ? 'bg-purple-600 text-white'
-              : 'bg-white text-purple-600 border border-purple-300'
-          }`}
-        >
-          Edit Profile
-        </button>
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Upcoming Sessions */}
+        <div className="bg-white rounded-2xl shadow-md p-5">
+          <h2 className="text-lg font-semibold text-purple-700 mb-2">🗓️ Upcoming Sessions
+          </h2>
+          <UpcomingSessions userId={user.id} userRole="therapist" />
+        </div>
+
+        {/* Messages Dashboard with Scroll */}
+        <div className="bg-white rounded-2xl shadow-md p-5">
+          <h2 className="text-lg font-semibold text-purple-700 mb-2">🛍️ Messages
+          </h2>
+          <div className="h-[400px] overflow-y-auto border rounded-md">
+            <MessagesDashboard userId={user.id} userRole="therapist" />
+          </div>
+        </div>
       </div>
 
-      {/* Tab Content */}
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-xl">
-        {activeTab === 'requests' && <BookingRequests userId={user?.id} />}
-        {activeTab === 'messages' && (
-          <div className="text-gray-500 text-center py-10">
-            Messaging is coming soon!
-          </div>
-        )}
-
-        {activeTab === 'profile' && <TherapistProfileEditor user={user} />}
+      {/* Profile Editor Full Width */}
+      <div className="bg-white rounded-2xl shadow-md p-5">
+        <h2 className="text-lg font-semibold text-purple-700 mb-4">📝 Edit Profile
+        </h2>
+        <TherapistProfileEditor user={user} />
       </div>
     </div>
   );

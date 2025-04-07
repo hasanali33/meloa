@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import MessagesDashboard from '@/components/MessagesDashboard'
 import { supabase } from '../../../../lib/supabaseClient'
+import UpcomingSessions from '@/components/UpcomingSessions';
+
 
 export default function ClientDashboard() {
   const [client, setClient] = useState<any>(null)
@@ -80,14 +83,15 @@ export default function ClientDashboard() {
         {/* Messages */}
         <div className="border-t pt-6 space-y-2">
           <h2 className="text-lg font-semibold">💬 Messages</h2>
-          <p className="text-sm text-gray-600">Coming soon: your conversations with guides.</p>
+          <MessagesDashboard userId={client.id} userRole="client" />
         </div>
 
         {/* Sessions */}
-        <div className="border-t pt-6 space-y-2">
-          <h2 className="text-lg font-semibold">📆 Upcoming Sessions</h2>
-          <p className="text-sm text-gray-600">Coming soon: your next booked healing session.</p>
+        <div className="border-t pt-6 space-y-4">
+            <h2 className="text-lg font-semibold">📆 Upcoming Sessions</h2>
+            <UpcomingSessions userId={client.id} userRole="client" />
         </div>
+
 
         {/* Guides */}
         <div className="border-t pt-6 space-y-2">

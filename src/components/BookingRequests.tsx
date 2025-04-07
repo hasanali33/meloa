@@ -30,14 +30,16 @@ export default function BookingRequests({ userId, userRole, onSelect }) {
       )}
       {requests.map((req) => (
         <div
-          key={req.id}
-          onClick={() => onSelect(req)}
-          className="cursor-pointer p-4 border border-gray-200 rounded-lg shadow-sm bg-white hover:bg-gray-50 transition"
-        >
-          <p className="font-semibold">{req.client_name}</p>
-          <p className="text-xs text-gray-500">{req.client_email}</p>
-          <p className="mt-1 text-sm">{req.message}</p>
-        </div>
+        key={req.id}
+        onClick={() => onSelect(req)}
+        className="cursor-pointer p-4 border border-purple-100 rounded-xl shadow-sm bg-white hover:shadow-md hover:bg-purple-50 transition-all"
+      >
+        <p className="font-semibold text-gray-800 text-base">{req.client_name}</p>
+        <p className="text-xs text-gray-500 break-all">{req.client_email}</p>
+        <p className="mt-2 text-sm text-gray-700 line-clamp-3 break-words">
+          {req.message}
+        </p>
+      </div>      
       ))}
     </div>
   );

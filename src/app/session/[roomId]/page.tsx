@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { supabase } from '../../../../lib/supabaseClient'
 import DailyVideoCall from '@/components/DailyVideoCall'
+import Navbar from '../../../components/NavBar'
 
 export default function SessionPage() {
   const { roomId } = useParams()
@@ -11,6 +12,7 @@ export default function SessionPage() {
   const [roomUrl, setRoomUrl] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [dashboardRoute, setDashboardRoute] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -38,6 +40,8 @@ export default function SessionPage() {
         return
       }
 
+      // Set dashboard route
+      setDashboardRoute(isClient ? '/client/dashboard' : '/dashboard')
       setRoomUrl(data.daily_room_url)
       setLoading(false)
     }
@@ -50,9 +54,26 @@ export default function SessionPage() {
   if (!roomUrl) return <p className="text-center mt-20">No video room set for this session.</p>
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 p-6">
-      <h1 className="text-xl font-bold mb-4 text-center text-blue-700">🎥 Your Healing Session</h1>
-      <DailyVideoCall roomUrl={roomUrl} />
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
+      <Navbar />
+
+      <main className="p-6">
+        <div className="max-w-4xl mx-auto flex flex-col items-center gap-4 mb-6">
+          {dashboardRoute && (
+            <button
+              onClick={() => router.push(dashboardRoute)}
+              className="text-sm px-5 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
+            >
+              ← Go Back to Dashboard
+            </button>
+          )}
+          <h1 className="text-xl font-bold text-center text-blue-700">🎥 Your Healing Session</h1>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          <DailyVideoCall roomUrl={roomUrl} />
+        </div>
+      </main>
     </div>
   )
 }

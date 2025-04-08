@@ -32,7 +32,6 @@ export default function DailyVideoCall({ roomUrl }: { roomUrl: string }) {
 
   return (
     <div className="w-full h-screen bg-white">
-        {roomUrl}
       <div ref={callRef} className="w-full h-full" />
     </div>
   )

@@ -18,7 +18,7 @@ export default function Navbar() {
     '/login/client',
     '/login/healer',
     '/signup'
-  ].some((route) => pathname.startsWith(route));
+  ].some((route) => pathname.startsWith(route)) || pathname.startsWith('/session');
 
   useEffect(() => {
     const getUser = async () => {

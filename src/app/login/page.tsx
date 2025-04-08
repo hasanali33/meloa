@@ -1,10 +1,29 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '../../../lib/supabaseClient';
 import Navbar from '../../components/NavBar';
 
 export default function LoginLandingPage() {
   const router = useRouter();
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Default to /client/dashboard for now (or customize based on role if needed)
+        router.push('/client/dashboard');
+      } else {
+        setChecking(false);
+      }
+    };
+
+    checkUser();
+  }, [router]);
+
+  if (checking) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100">

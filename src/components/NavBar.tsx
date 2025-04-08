@@ -17,8 +17,14 @@ export default function Navbar() {
     '/quiz',
     '/login/client',
     '/login/healer',
-    '/signup'
+    '/signup',
   ].some((route) => pathname.startsWith(route)) || pathname.startsWith('/session');
+
+  // We'll hardcode the dashboard path for now — update later when role logic is in place
+  const shouldShowDashboardButton =
+    user &&
+    !pathname.startsWith('/dashboard') &&
+    !pathname.startsWith('/client/dashboard');
 
   useEffect(() => {
     const getUser = async () => {
@@ -40,12 +46,12 @@ export default function Navbar() {
     >
       <div className="flex items-center space-x-8 relative">
         <Link
-            href="/"
-            className={`text-2xl font-bold ${
-                isLight ? 'text-purple-700' : 'text-white'
-            }`}
-            >
-        meloa
+          href="/"
+          className={`text-2xl font-bold ${
+            isLight ? 'text-purple-700' : 'text-white'
+          }`}
+        >
+          meloa
         </Link>
         <Link href="/about">
           <span className="hover:underline cursor-pointer">About</span>
@@ -74,6 +80,19 @@ export default function Navbar() {
       </div>
 
       <div className="space-x-4 flex items-center">
+        {shouldShowDashboardButton && (
+          <Link href="/client/dashboard"> {/* Or change to '/dashboard' for therapist */}
+            <button
+              className={`px-4 py-2 font-medium rounded-full transition ${
+                isLight
+                  ? 'bg-purple-600 text-white hover:bg-purple-700'
+                  : 'bg-white text-purple-700 hover:bg-purple-100'
+              }`}
+            >
+              Dashboard
+            </button>
+          </Link>
+        )}
         {!user && (
           <Link href="/login">
             <button

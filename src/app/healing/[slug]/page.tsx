@@ -1,5 +1,3 @@
-// File: app/healing/[slug]/page.tsx
-
 'use client';
 
 import { useParams } from 'next/navigation';
@@ -8,8 +6,7 @@ import { supabase } from '../../../../lib/supabaseClient';
 import Link from 'next/link';
 import { healingPaths } from '../../data/healingPaths';
 import TherapistCard from '@/components/TherapistCard';
-
-
+import Navbar from '../../../components/NavBar';
 
 export default function HealingPathPage() {
   const { slug } = useParams();
@@ -17,8 +14,6 @@ export default function HealingPathPage() {
 
   const [therapists, setTherapists] = useState([]);
   const [showAll, setShowAll] = useState(false);
-  const [showProviderMenu, setShowProviderMenu] = useState(false);
-  
 
   useEffect(() => {
     const fetchTherapists = async () => {
@@ -41,46 +36,8 @@ export default function HealingPathPage() {
         <img src="/bg-blobs.png" alt="Background" className="w-full h-full object-cover opacity-100" />
       </div>
 
-      {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-        <div className="flex items-center space-x-8 relative">
-            <Link href="/">
-            <h1 className="text-3xl font-bold">meloa</h1>
-            </Link>
-          <Link href="/about">
-            <span className="hover:underline cursor-pointer">About</span>
-          </Link>
-          <Link href="/how-it-works">
-            <span className="hover:underline cursor-pointer">How It Works</span>
-          </Link>
-          <div className="relative">
-            <span
-              className="hover:underline cursor-pointer"
-              onClick={() => setShowProviderMenu(!showProviderMenu)}
-            >
-              For Providers
-            </span>
-            {showProviderMenu && (
-              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-md overflow-hidden z-50">
-                <Link href="/signup">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Join as a Guide</div>
-                </Link>
-                <Link href="/login">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Log In</div>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="space-x-4">
-          <Link href="/therapists">
-            <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
-          </Link>
-          <Link href="/signup">
-            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as a Guide</button>
-          </Link>
-        </div>
-      </header>
+      {/* ✅ Navbar */}
+      <Navbar />
 
       <div className="max-w-4xl mx-auto px-6 py-28">
         <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4">{path.title}</h1>
@@ -105,11 +62,10 @@ export default function HealingPathPage() {
           <div>
             <h2 className="text-xl font-semibold mt-8 mb-3">Guides Who Practice This</h2>
             <div className="space-y-6">
-                {(showAll ? therapists : therapists.slice(0, 2)).map((t) => (
-                    <TherapistCard key={t.id} therapist={t} />
-                ))}
+              {(showAll ? therapists : therapists.slice(0, 2)).map((t) => (
+                <TherapistCard key={t.id} therapist={t} />
+              ))}
             </div>
-
 
             {therapists.length > 2 && !showAll && (
               <div className="text-center mt-4">
@@ -121,19 +77,20 @@ export default function HealingPathPage() {
                 </button>
               </div>
             )}
+
             {therapists.length > 0 && (
-            <div className="text-center mt-8">
+              <div className="text-center mt-8">
                 <Link
-                href={{
+                  href={{
                     pathname: '/therapists',
-                    query: { healingPath: path.supabaseKey }, // match what's stored in supabase
-                }}
+                    query: { healingPath: path.supabaseKey },
+                  }}
                 >
-                <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full font-medium shadow hover:opacity-90 transition">
+                  <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full font-medium shadow hover:opacity-90 transition">
                     ✨ Explore More Guides on This Path
-                </button>
+                  </button>
                 </Link>
-            </div>
+              </div>
             )}
           </div>
         </div>

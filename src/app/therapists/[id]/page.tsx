@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { supabase } from '../../../../lib/supabaseClient';
 import { Loader2 } from 'lucide-react';
-import Link from 'next/link';
 import BookingForm from '../../../components/BookingForm';
 import { DM_Serif_Display, Inter } from 'next/font/google';
+import Navbar from '../../../components/NavBar';
 
 const serif = DM_Serif_Display({ subsets: ['latin'], weight: '400', variable: '--font-serif' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -14,7 +14,6 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 export default function TherapistProfile() {
   const { id } = useParams();
   const [therapist, setTherapist] = useState(null);
-  const [showProviderMenu, setShowProviderMenu] = useState(false);
 
   useEffect(() => {
     async function fetchTherapist() {
@@ -44,44 +43,7 @@ export default function TherapistProfile() {
         <img src="/bg-blobs.png" alt="Background Blobs" className="w-full h-full object-cover" />
       </div>
 
-        {/* Navbar */}
-        <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-        <div className="flex items-center space-x-8 relative">
-          <h1 className="text-3xl font-bold">meloa</h1>
-          <Link href="/about">
-            <span className="hover:underline cursor-pointer">About</span>
-          </Link>
-          <Link href="/how-it-works">
-            <span className="hover:underline cursor-pointer">How It Works</span>
-          </Link>
-          <div className="relative">
-            <span
-              className="hover:underline cursor-pointer"
-              onClick={() => setShowProviderMenu(!showProviderMenu)}
-            >
-              For Providers
-            </span>
-            {showProviderMenu && (
-              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-md overflow-hidden z-50">
-                <Link href="/signup">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Join as a Guide</div>
-                </Link>
-                <Link href="/login">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Log In</div>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="space-x-4">
-          <Link href="/therapists">
-            <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
-          </Link>
-          <Link href="/signup">
-            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as a Guide</button>
-          </Link>
-        </div>
-      </header>
+      <Navbar />
 
       <div className="relative z-10 flex justify-center py-16 px-4">
         <div className="w-full max-w-5xl bg-white/90 backdrop-blur-md rounded-[32px] shadow-2xl p-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -123,15 +85,15 @@ export default function TherapistProfile() {
                 <div>
                   <p className="font-semibold mb-2">🌈 Healing Path:</p>
                   <ul className="space-y-2">
-                  {Array.isArray(therapist.healing_path)
-                    ? therapist.healing_path.map((item, i) => (
-                        <li key={i}>💫 {item.trim()}</li>
+                    {Array.isArray(therapist.healing_path)
+                      ? therapist.healing_path.map((item, i) => (
+                          <li key={i}>💫 {item.trim()}</li>
                         ))
-                    : typeof therapist.healing_path === 'string'
-                    ? therapist.healing_path.split(',').map((item, i) => (
-                        <li key={i}>💫 {item.trim()}</li>
+                      : typeof therapist.healing_path === 'string'
+                      ? therapist.healing_path.split(',').map((item, i) => (
+                          <li key={i}>💫 {item.trim()}</li>
                         ))
-                    : null}
+                      : null}
                   </ul>
                 </div>
               </div>
@@ -207,4 +169,3 @@ export default function TherapistProfile() {
     </div>
   );
 }
-

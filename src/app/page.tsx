@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '../components/NavBar';
+
 
 export default function LandingPage() {
   const router = useRouter();
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showProviderMenu, setShowProviderMenu] = useState(false);
 
   const userIntentOptions = [
     "I'm navigating a breakup",
@@ -61,43 +62,7 @@ export default function LandingPage() {
       </div>
 
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-        <div className="flex items-center space-x-8 relative">
-          <h1 className="text-3xl font-bold">meloa</h1>
-          <Link href="/about">
-            <span className="hover:underline cursor-pointer">About</span>
-          </Link>
-          <Link href="/how-it-works">
-            <span className="hover:underline cursor-pointer">How It Works</span>
-          </Link>
-          <div className="relative">
-            <span
-              className="hover:underline cursor-pointer"
-              onClick={() => setShowProviderMenu(!showProviderMenu)}
-            >
-              For Providers
-            </span>
-            {showProviderMenu && (
-              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-md overflow-hidden z-50">
-                <Link href="/signup">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Join as a Guide</div>
-                </Link>
-                <Link href="/login">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Log In</div>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="space-x-4">
-          <Link href="/therapists">
-            <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
-          </Link>
-          <Link href="/signup">
-            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as a Guide</button>
-          </Link>
-        </div>
-      </header>
+      <Navbar variant="dark" />
 
       {/* Hero Section */}
       <section className="text-center pt-40 px-4 text-white relative z-10">

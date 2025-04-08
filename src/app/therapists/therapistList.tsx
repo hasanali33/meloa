@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import TherapistCard from '@/components/TherapistCard';
-import Link from 'next/link';
+import Navbar from '../../components/NavBar';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function TherapistList() {
   const [therapists, setTherapists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showProviderMenu, setShowProviderMenu] = useState(false);
   const therapistsPerPage = 15;
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -98,47 +97,9 @@ export default function TherapistList() {
         <img src="/bg-blobs.png" alt="Background" className="w-full h-full object-cover" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <header className="flex justify-between items-center px-6 py-4 bg-transparent text-white z-10 relative">
-          <div className="flex items-center space-x-8 relative">
-            <Link href="/">
-              <h1 className="text-3xl font-bold">meloa</h1>
-            </Link>
-            <Link href="/about">
-              <span className="hover:underline cursor-pointer">About</span>
-            </Link>
-            <Link href="/how-it-works">
-              <span className="hover:underline cursor-pointer">How It Works</span>
-            </Link>
-            <div className="relative">
-              <span
-                className="hover:underline cursor-pointer"
-                onClick={() => setShowProviderMenu(!showProviderMenu)}
-              >
-                For Providers
-              </span>
-              {showProviderMenu && (
-                <div className="absolute left-0 mt-2 w-48 bg-white text-gray-900 shadow-lg rounded-md overflow-hidden z-50">
-                  <Link href="/signup">
-                    <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Join as a Guide</div>
-                  </Link>
-                  <Link href="/login">
-                    <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Log In</div>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="space-x-4">
-            <Link href="/therapists">
-              <button className="px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">Connect with a Guide</button>
-            </Link>
-            <Link href="/signup">
-              <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition">Join as a Guide</button>
-            </Link>
-          </div>
-        </header>
+      <Navbar />
 
+      <div className="relative z-10 max-w-6xl mx-auto">
         <h2 className="text-4xl font-extrabold text-center text-white my-8">Meet Your Healing Guides</h2>
 
         {hasFilters && (

@@ -6,7 +6,7 @@ import TherapistProfileEditor from '../../components/TherapistProfileEditor';
 import UpcomingSessions from '../../components/UpcomingSessions';
 import MessagesDashboard from '../../components/MessagesDashboard';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import Navbar from '../../components/NavBar';
 
 export default function HealerDashboard() {
   const [therapist, setTherapist] = useState<any>(null);
@@ -60,33 +60,18 @@ export default function HealerDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
-      {/* 💡 Light Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 bg-white shadow border-b border-gray-100">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-bold text-purple-700">
-            meloa
-          </Link>
-          <Link href="/about" className="text-sm text-gray-600 hover:text-purple-600">
-            About
-          </Link>
-          <Link href="/how-it-works" className="text-sm text-gray-600 hover:text-purple-600">
-            How It Works
-          </Link>
-        </div>
-        <div className="flex items-center gap-4">
+      <Navbar />
+
+      {/* Dashboard Content */}
+      <main className="p-6 space-y-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-blue-800">🦜 Healer Dashboard</h1>
           <button
             onClick={handleLogout}
             className="text-sm px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
           >
             Log Out
           </button>
-        </div>
-      </header>
-
-      {/* Dashboard Content */}
-      <main className="p-6 space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-blue-800">🦜 Healer Dashboard</h1>
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">

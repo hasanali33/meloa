@@ -5,7 +5,7 @@ import { supabase } from '../../../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import MessagesDashboard from '@/components/MessagesDashboard';
 import UpcomingSessions from '@/components/UpcomingSessions';
-import Link from 'next/link';
+import Navbar from '../../../components/NavBar';
 
 export default function ClientDashboard() {
   const [client, setClient] = useState<any>(null);
@@ -48,28 +48,7 @@ export default function ClientDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100">
-      {/* 💡 Light Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 bg-white shadow border-b border-gray-100">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-bold text-purple-700">
-            meloa
-          </Link>
-          <Link href="/about" className="text-sm text-gray-600 hover:text-purple-600">
-            About
-          </Link>
-          <Link href="/how-it-works" className="text-sm text-gray-600 hover:text-purple-600">
-            How It Works
-          </Link>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleLogout}
-            className="text-sm px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-          >
-            Log Out
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Dashboard Content */}
       <main className="p-4 md:p-10">
@@ -77,6 +56,12 @@ export default function ClientDashboard() {
           <h1 className="text-3xl font-bold text-blue-800">
             👋 Welcome back, {client.name?.split(' ')[0] || 'Friend'}!
           </h1>
+          <button
+            onClick={handleLogout}
+            className="text-sm px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+          >
+            Log Out
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
@@ -130,4 +115,4 @@ export default function ClientDashboard() {
       </main>
     </div>
   );
-}
+} 

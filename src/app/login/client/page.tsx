@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../../../lib/supabaseClient';
 import ClientAuthForm from '@/components/ClientAuthForm';
+import { sendWelcomeIfNeeded } from '@/utils/sendWelcomeIfNeeded';
 
 export default function ClientLoginPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function ClientLoginPage() {
       } = await supabase.auth.getUser();
 
       if (user) {
+        await sendWelcomeIfNeeded(user);
         router.push('/client/dashboard');
       }
     };

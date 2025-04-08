@@ -9,12 +9,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { sender, recipientEmail, recipientName, messagePreview } = req.body;
 
-  try {
-    const subject = sender === 'therapist'
-      ? 'Your guide just replied ✨'
-      : 'New message from your client 💬';
+  if (!sender || !recipientEmail || !recipientName || !messagePreview) {
+    return res.status(400).json({ success: false, error: 'Missing required fields' });
+  }
 
-    const greeting = sender === 'therapist'
+  try {
+    const isFromTherapist = sender === 'therapist';
+
+    const subject = isFromTherapist
+      ? '✨ New message from your guide on Meloa'
+      : '💬 New message from your client on Meloa';
+
+    const greeting = isFromTherapist
       ? `Hi ${recipientName},`
       : `Hey ${recipientName},`;
 
@@ -24,14 +30,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <blockquote style="border-left: 2px solid #ccc; margin: 1em 0; padding-left: 1em;">
         ${messagePreview}
       </blockquote>
-      <p><a href="https://meloa.app/dashboard">View and reply in your dashboard →</a></p>
+      <p><a href="https://joinmelona.com/dashboard">View and reply in your dashboard →</a></p>
       <br />
       <p>💜 The Meloa Team</p>
     `;
 
     const emailRes = await resend.emails.send({
-      from: 'notifications@meloa.app',
+      from: 'noreply@joinmelona.com',
       to: recipientEmail,
+      replyTo: 'hello@joinmelona.com',
       subject,
       html,
     });

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../../../lib/supabaseClient';
 import TherapistLogin from '@/components/TherapistLogin';
 import Navbar from '../../../components/NavBar';
+import { sendWelcomeIfNeeded } from '@/utils/sendWelcomeIfNeeded';
 
 export default function TherapistLoginPage() {
   const router = useRouter();
@@ -13,12 +14,15 @@ export default function TherapistLoginPage() {
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+
       if (user) {
+        await sendWelcomeIfNeeded(user);
         router.push('/dashboard');
       } else {
         setChecking(false);
       }
     };
+
     checkUser();
   }, [router]);
 
@@ -28,7 +32,6 @@ export default function TherapistLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100">
       <Navbar />
 
-      {/* Login Form */}
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-200 via-pink-100 to-purple-100">
         <TherapistLogin />
       </div>

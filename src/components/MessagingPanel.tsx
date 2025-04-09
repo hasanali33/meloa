@@ -1,4 +1,3 @@
-// components/MessagingPanel.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -10,14 +9,15 @@ export default function MessagingPanel({ booking, userRole }) {
   const [reply, setReply] = useState('');
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
+  const [otherName, setOtherName] = useState('');
   const isTherapist = userRole === 'therapist';
 
   useEffect(() => {
     if (!booking) return;
-
+  
     const fetchAll = async () => {
       setLoading(true);
-
+  
       const [{ data: msgs, error: msgErr }, { data: sess, error: sessErr }] = await Promise.all([
         supabase
           .from('messages')
@@ -30,18 +30,38 @@ export default function MessagingPanel({ booking, userRole }) {
           .eq('booking_request_id', booking.id)
           .single(),
       ]);
-
+  
       if (msgErr) console.error('Fetch messages error:', msgErr.message);
       else setMessages(msgs);
-
+  
       if (sessErr) console.error('Session fetch error:', sessErr.message);
       else setSession(sess);
-
+  
       setLoading(false);
     };
-
+  
+    const fetchOtherName = async () => {
+      const otherId = isTherapist ? booking.client_id : booking.therapist_id;
+      const table = isTherapist ? 'clients' : 'therapists';
+      const nameField = isTherapist ? 'name' : 'full_name';
+      const idField = isTherapist ? 'id' : 'user_id'; // this line is KEY
+  
+      const { data, error } = await supabase
+        .from(table)
+        .select(nameField)
+        .eq(idField, otherId)
+        .single();
+  
+      if (data?.[nameField]) {
+        setOtherName(data[nameField]);
+      } else {
+        setOtherName('Unknown');
+      }
+    };
+  
     fetchAll();
-
+    fetchOtherName();
+  
     const channel = supabase
       .channel(`messages-booking-${booking.id}`)
       .on(
@@ -57,7 +77,7 @@ export default function MessagingPanel({ booking, userRole }) {
         }
       )
       .subscribe();
-
+  
     return () => {
       supabase.removeChannel(channel);
     };
@@ -65,22 +85,61 @@ export default function MessagingPanel({ booking, userRole }) {
 
   const sendMessage = async () => {
     if (!reply.trim()) return;
-
+  
     const newMessage = {
       booking_id: booking.id,
       sender: isTherapist ? 'therapist' : 'client',
       content: reply,
     };
-
+  
     const { error } = await supabase.from('messages').insert(newMessage);
-
+  
     if (!error) {
       setReply('');
-      setMessages((prev) => [...prev, { ...newMessage, created_at: new Date().toISOString() }]);
+      setMessages((prev) => [
+        ...prev,
+        { ...newMessage, created_at: new Date().toISOString() },
+      ]);
+  
+      try {
+        const recipientEmail = isTherapist
+          ? booking.client_email
+          : booking.therapist_email;
+  
+        const recipientName = otherName || 'your guide';
+  
+        const sender = isTherapist ? 'therapist' : 'client';
+  
+        // Log the data to be sent to the API
+        console.log('Sending email with:', {
+          sender,
+          recipientEmail,
+          recipientName,
+          messagePreview: reply.slice(0, 150),
+        });
+  
+        const res = await fetch('/api/sendNewMessageEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sender,
+            recipientEmail,
+            recipientName,
+            messagePreview: reply.slice(0, 150),
+          }),
+        });
+  
+        const data = await res.json(); // Log the response from the API
+        console.log('Email send response:', data); // Check the response
+      } catch (err) {
+        console.error('❌ Failed to send email notification:', err);
+      }
     } else {
       console.error('Send message error:', error.message);
     }
   };
+  
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') sendMessage();
@@ -104,7 +163,7 @@ export default function MessagingPanel({ booking, userRole }) {
   return (
     <div className="mt-4 border rounded-lg p-4 bg-white shadow-sm space-y-4">
       <h3 className="text-lg font-semibold text-purple-700">
-        Chat about your session with {isTherapist ? booking.client_name : 'your guide'}
+        Chat about your session with {otherName || 'Unknown'}
       </h3>
 
       {session && (

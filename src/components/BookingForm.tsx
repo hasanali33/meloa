@@ -99,23 +99,22 @@ export default function BookingForm({ therapistId, therapistName }) {
         .select()
         .single();
 
-
-    if (bookingError || !booking?.id) {
-      console.error('Booking error:', bookingError?.message);
-      setLoading(false);
-      return;
-    }
+        if (bookingError || !booking?.id) {
+        console.error('Booking error:', bookingError?.message);
+        setLoading(false);
+        return;
+        }
 
     // 2. Create session
-    const sessionRes = await fetch('/api/create-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        clientId: user.id, // UUID from `clients` table
-        therapistId,
-        sessionTime,
-        bookingRequestId: booking.id, // int8 from `booking_requests`
-      }),
+        const sessionRes = await fetch('/api/create-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            clientId: user.id, // UUID from `clients` table
+            therapistId,
+            sessionTime,
+            bookingRequestId: booking.id, // int8 from `booking_requests`
+        }),
     });
 
     const sessionData = await sessionRes.json();
@@ -126,29 +125,43 @@ export default function BookingForm({ therapistId, therapistName }) {
       return;
     }
 
-    // 3. Send email
+    // 3. Send email to client and therapist
     const { data: therapist, error: fetchError } = await supabase
-      .from('therapists')
-      .select('email, full_name')
-      .eq('id', therapistId)
-      .single();
+        .from('therapists')
+        .select('email, full_name')
+        .eq('user_id', therapistId)  // Use the user_id here
+        .single();
+
 
     if (!fetchError && therapist?.email) {
-      await fetch('/api/sendBookingEmail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          therapistEmail: therapist.email,
-          therapistName: therapist.full_name,
-          clientName: formData.clientName,
-          clientEmail: formData.clientEmail,
-        }),
-      });
+      // Send email to client
+      // Send email to therapist
+        await fetch('/api/sendTherapistEmail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+            therapistEmail: therapist.email,
+            therapistName: therapist.full_name,
+            clientName: formData.clientName,
+            }),
+        });
+        
+        // Send email to client
+        await fetch('/api/sendClientBookingEmail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+            clientEmail: formData.clientEmail,
+            clientName: formData.clientName,
+            therapistName: therapist.full_name,
+            }),
+        });
     }
 
-    setSubmitted(true);
-    setLoading(false);
-  };
+        setSubmitted(true);
+        setLoading(false);
+    };
+
 
   if (submitted) {
     return (

@@ -100,40 +100,73 @@ const TherapistSignupForm = () => {
     e.preventDefault();
     setUploading(true);
     setMessage('');
-
+  
     try {
+      // 1. Create Supabase auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            name: formData.fullName,
+          },
+        },
       });
-
+  
       if (authError) throw authError;
-
+  
+      const user = authData.user;
+      const email = user?.email || formData.email;
+      const name = formData.fullName;
+  
+      // 2. Upload profile image (if any)
       const profileImageUrl = formData.profileImage
         ? await uploadFile(formData.profileImage, {
             bucket: 'profile-images',
             folder: 'therapists',
           })
         : '';
-
-      const { error } = await supabase.from('therapists').insert({
-        full_name: formData.fullName,
-        email: formData.email,
+  
+      // 3. Send welcome email
+      try {
+        const res = await fetch('/api/sendWelcomeEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            name,
+            role: 'healer',
+          }),
+        });
+  
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error('❌ Failed to send welcome email:', errText);
+        }
+      } catch (err) {
+        console.error('❌ Network error sending welcome email:', err);
+      }
+  
+      // 4. Insert into therapists table
+      const { error: dbError } = await supabase.from('therapists').insert({
+        full_name: name,
+        email,
         bio: formData.bio,
         profile_image_url: profileImageUrl,
         modalities: formData.modalities,
         specialties: formData.specialties,
         calendly_link: formData.calendlyLink,
         is_virtual: formData.isVirtual,
-        user_id: authData.user?.id,
+        user_id: user?.id,
         vibe_tags: formData.vibeTags,
-        healing_path: formData.healingPath, // ✅ inserted
+        healing_path: formData.healingPath,
+        welcome_email_sent: true, // ✅ mark as sent immediately
       });
-
-      if (error) throw error;
-
+  
+      if (dbError) throw dbError;
+  
+      // 5. Done
       setMessage('✅ Signup complete! Your profile has been submitted.');
-
       setFormData({
         fullName: '',
         email: '',
@@ -145,7 +178,7 @@ const TherapistSignupForm = () => {
         isVirtual: false,
         profileImage: null,
         vibeTags: [],
-        healingPath: [], // ✅ reset
+        healingPath: [],
       });
     } catch (err: any) {
       console.error('❌ ERROR:', err.message || err);
@@ -154,6 +187,7 @@ const TherapistSignupForm = () => {
       setUploading(false);
     }
   };
+  
 
   const modalityOptions = [
     'Art Therapy', 'Music Therapy', 'Dance Therapy', 'Drama Therapy', 'Breathwork',

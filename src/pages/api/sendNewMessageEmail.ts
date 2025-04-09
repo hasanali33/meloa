@@ -36,9 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     `;
 
     const emailRes = await resend.emails.send({
-      from: 'noreply@joinmelona.com',
+      from: 'noreply@joinmeloa.com',
       to: recipientEmail,
-      replyTo: 'hello@joinmelona.com',
+      replyTo: 'hello@joinmeloa.com',
       subject,
       html,
     });

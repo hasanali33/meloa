@@ -5,7 +5,11 @@ import { supabase } from '../../lib/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-export default function TherapistLogin() {
+interface TherapistLoginProps {
+  onAuthSuccess?: () => void;
+}
+
+export default function TherapistLogin({ onAuthSuccess }: TherapistLoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,13 +30,16 @@ export default function TherapistLogin() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push('/dashboard');
+      if (onAuthSuccess) {
+        await onAuthSuccess(); // 🔥 Call the passed-in success callback
+      } else {
+        router.push('/dashboard'); // fallback if no callback passed
+      }
     }
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-
       <style jsx>{`
         @keyframes blob {
           0%, 100% {

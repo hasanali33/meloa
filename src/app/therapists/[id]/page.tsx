@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import BookingForm from '../../../components/BookingForm';
 import { DM_Serif_Display, Inter } from 'next/font/google';
 import Navbar from '../../../components/NavBar';
+import LoginModal from '@/components/LoginModal';
 
 const serif = DM_Serif_Display({ subsets: ['latin'], weight: '400', variable: '--font-serif' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -14,6 +15,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 export default function TherapistProfile() {
   const { id } = useParams();
   const [therapist, setTherapist] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     async function fetchTherapist() {
@@ -29,6 +31,17 @@ export default function TherapistProfile() {
 
     if (id) fetchTherapist();
   }, [id]);
+
+  // Listen for login prompt from BookingForm
+  useEffect(() => {
+    const handleRequireLogin = () => {
+      setShowLoginModal(true);
+    };
+    window.addEventListener('openLoginModal', handleRequireLogin);
+    return () => {
+      window.removeEventListener('openLoginModal', handleRequireLogin);
+    };
+  }, []);
 
   if (!therapist)
     return (
@@ -166,6 +179,14 @@ export default function TherapistProfile() {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          onLoginSuccess={() => setShowLoginModal(false)}
+        />
+      )}
     </div>
   );
 }

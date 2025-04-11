@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import Calendar from 'react-calendar';
@@ -16,37 +18,41 @@ export default function BookingForm({ therapistId, therapistName }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 🔁 Fetch user (initial load or after modal login)
+  const fetchUser = async () => {
+    const { data } = await supabase.auth.getUser();
+    const authUser = data?.user;
+
+    if (authUser) {
+      const { data: client, error: clientError } = await supabase
+        .from('clients')
+        .select('id, name')
+        .eq('email', authUser.email)
+        .single();
+
+      if (!clientError) {
+        setUser({ id: client.id, email: authUser.email });
+        setFormData((prevState) => ({
+          ...prevState,
+          clientName: client.name || '',
+          clientEmail: authUser.email || '',
+        }));
+      } else {
+        console.error('Error fetching client:', clientError.message);
+      }
+    }
+  };
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      const authUser = data?.user;
+    fetchUser();
+  }, []);
 
-      if (authUser) {
-        const { data: client, error: clientError } = await supabase
-          .from('clients')
-          .select('id, name')
-          .eq('email', authUser.email)
-          .single();
-
-        if (clientError) {
-          console.error('Error fetching client:', clientError.message);
-        } else {
-          setUser({
-            id: client.id, // uuid from clients table
-            email: authUser.email,
-          });
-
-          setFormData((prevState) => ({
-            ...prevState,
-            clientName: client.name || '',
-            clientEmail: authUser.email || '',
-          }));
-        }
-      }
-    };
-    getUser();
+  // 🧠 Listen for global login success event
+  useEffect(() => {
+    const handler = () => fetchUser();
+    window.addEventListener('recheckUser', handler);
+    return () => window.removeEventListener('recheckUser', handler);
   }, []);
 
   const handleTimeSelect = (time) => {
@@ -61,13 +67,21 @@ export default function BookingForm({ therapistId, therapistName }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    // 🔐 Guard: Require login
+    if (!user || !user.id) {
+      alert('Please log in to book a session.');
+      const event = new CustomEvent('openLoginModal');
+      window.dispatchEvent(event);
+      return;
+    }
 
     if (!formData.sessionTime || !formData.sessionDate) {
       alert('Please select a date and time.');
-      setLoading(false);
       return;
     }
+
+    setLoading(true);
 
     const selectedDate = new Date(formData.sessionDate);
     if (isNaN(selectedDate)) {
@@ -87,34 +101,34 @@ export default function BookingForm({ therapistId, therapistName }) {
 
     // 1. Create booking request
     const { data: booking, error: bookingError } = await supabase
-        .from('booking_requests')
-        .insert({
-            therapist_id: therapistId,
-            client_id: user.id, // ✅ insert the client's UUID
-            client_name: formData.clientName,
-            client_email: formData.clientEmail,
-            message: `Booking a session with therapist ${therapistId}`,
-            session_time: sessionTime,
-        })
-        .select()
-        .single();
+      .from('booking_requests')
+      .insert({
+        therapist_id: therapistId,
+        client_id: user.id,
+        client_name: formData.clientName,
+        client_email: formData.clientEmail,
+        message: `Booking a session with therapist ${therapistId}`,
+        session_time: sessionTime,
+      })
+      .select()
+      .single();
 
-        if (bookingError || !booking?.id) {
-        console.error('Booking error:', bookingError?.message);
-        setLoading(false);
-        return;
-        }
+    if (bookingError || !booking?.id) {
+      console.error('Booking error:', bookingError?.message);
+      setLoading(false);
+      return;
+    }
 
     // 2. Create session
-        const sessionRes = await fetch('/api/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            clientId: user.id, // UUID from `clients` table
-            therapistId,
-            sessionTime,
-            bookingRequestId: booking.id, // int8 from `booking_requests`
-        }),
+    const sessionRes = await fetch('/api/create-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clientId: user.id,
+        therapistId,
+        sessionTime,
+        bookingRequestId: booking.id,
+      }),
     });
 
     const sessionData = await sessionRes.json();
@@ -127,41 +141,36 @@ export default function BookingForm({ therapistId, therapistName }) {
 
     // 3. Send email to client and therapist
     const { data: therapist, error: fetchError } = await supabase
-        .from('therapists')
-        .select('email, full_name')
-        .eq('user_id', therapistId)  // Use the user_id here
-        .single();
-
+      .from('therapists')
+      .select('email, full_name')
+      .eq('user_id', therapistId)
+      .single();
 
     if (!fetchError && therapist?.email) {
-      // Send email to client
-      // Send email to therapist
-        await fetch('/api/sendTherapistEmail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            therapistEmail: therapist.email,
-            therapistName: therapist.full_name,
-            clientName: formData.clientName,
-            }),
-        });
-        
-        // Send email to client
-        await fetch('/api/sendClientBookingEmail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            clientEmail: formData.clientEmail,
-            clientName: formData.clientName,
-            therapistName: therapist.full_name,
-            }),
-        });
+      await fetch('/api/sendTherapistEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          therapistEmail: therapist.email,
+          therapistName: therapist.full_name,
+          clientName: formData.clientName,
+        }),
+      });
+
+      await fetch('/api/sendClientBookingEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientEmail: formData.clientEmail,
+          clientName: formData.clientName,
+          therapistName: therapist.full_name,
+        }),
+      });
     }
 
-        setSubmitted(true);
-        setLoading(false);
-    };
-
+    setSubmitted(true);
+    setLoading(false);
+  };
 
   if (submitted) {
     return (

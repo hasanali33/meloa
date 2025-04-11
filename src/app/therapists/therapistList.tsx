@@ -100,7 +100,7 @@ export default function TherapistList() {
       <Navbar />
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-center text-white my-8">Meet Your Healing Guides</h2>
+        <h2 className="text-4xl font-extrabold text-center text-white my-8">Explore guides who bring creativity, culture, and soul to their healing practice.</h2>
 
         {hasFilters && (
           <div className="flex justify-center mb-4">

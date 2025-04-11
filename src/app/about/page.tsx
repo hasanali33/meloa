@@ -26,11 +26,21 @@ export default function AboutPage() {
         >
           We’re Not Just Building a Platform.<br />We’re Building a Movement.
         </motion.h1>
+
+        <motion.p
+          className="text-lg max-w-2xl mx-auto mb-4 text-white font-semibold"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          Gen Z and Millennials are the most therapy-curious generations ever — but most platforms weren’t built for <span className="underline decoration-purple-400 underline-offset-4">how they actually want to heal</span>.
+        </motion.p>
+
         <motion.p
           className="text-lg max-w-2xl mx-auto mb-16 text-white/90"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
         >
           Meloa exists because traditional therapy left too many people behind. Because healing isn’t one-size-fits-all. Because your culture, creativity, and spirit deserve to be part of your healing journey.
         </motion.p>
@@ -61,7 +71,7 @@ export default function AboutPage() {
               transition={{ delay: 0.5 + i * 0.2 }}
             >
               <h3 className="text-xl font-bold mb-2">{title}</h3>
-              <p className="text-white/90">{text}</p>
+              <p className="text-white/90 leading-relaxed">{text}</p>
             </motion.div>
           ))}
         </div>
@@ -83,3 +93,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

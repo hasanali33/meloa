@@ -72,7 +72,7 @@ export default function LandingPage() {
       </h1>
 
       <p className="mt-4 text-lg max-w-xl mx-auto text-white/90 text-center leading-relaxed">
-        Meloa connects you with <strong>licensed therapists</strong>, <strong>creative guides</strong>, and <strong>cultural healers</strong> who help you heal through <strong>movement</strong>, <strong>expression</strong>, and <strong>soul work</strong>.
+        Meloa connects you with <strong>licensed therapists</strong>, <strong>spiritual teachers</strong>, <strong>creative coaches</strong>, and <strong>cultural healers</strong> — guides who help you heal through <strong>movement</strong>, <strong>expression</strong>, and <strong>soul work</strong>.
         <br />
         <span className="block mt-3">Because therapy isn’t the only path. You deserve something that fits.</span>
       </p>
@@ -122,9 +122,12 @@ export default function LandingPage() {
       {/* Why Meloa (Typing Animation) */}
       <section className="bg-[#f9f7f3] py-20 px-6 text-center">
         <h2 className="text-3xl font-bold mb-4">What Makes Meloa Different</h2>
-        <p className="max-w-2xl mx-auto text-gray-700 mb-6">
-          Traditional therapy isn’t for everyone. Meloa is for those seeking healing that feels <strong>creative</strong>, <strong>cultural</strong>, and <strong>soulful</strong>. From licensed professionals to spiritual guides, artists, and ancestral teachers — we honor the full spectrum of healing.
-        </p>
+          <p className="max-w-2xl mx-auto text-gray-700 mb-6">
+            Traditional therapy isn’t for everyone. Meloa is for people who’ve tried therapy and still felt stuck — and want to heal through <strong>creativity</strong>, <strong>culture</strong>, and <strong>soul</strong>.  
+            <br /><br />
+            From licensed professionals to spiritual teachers, artists, coaches, and ancestral healers — we honor the full spectrum of what healing can look like.
+          </p>
+
 
         <div className="text-xl font-medium text-gray-800 min-h-[40px]">
           <AnimatePresence mode="wait">
@@ -161,7 +164,7 @@ export default function LandingPage() {
       <section className="bg-white py-24 px-6 text-center">
       <h2 className="text-3xl font-bold mb-6">Your Healing, Your Way</h2>
       <p className="text-gray-600 mb-10 max-w-2xl mx-auto">
-        Choose what feels right—somatic, expressive, ancestral, or spiritual. Meloa helps you explore healing that actually resonates.
+        Choose how you want to heal — not based on symptoms, but on what your soul needs right now.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -263,21 +266,30 @@ export default function LandingPage() {
         <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
           <div className="text-3xl mb-3">🎨</div>
           <h4 className="font-semibold text-lg mb-1">Modality-First</h4>
-          <p className="text-sm text-gray-600">Choose how you heal</p>
+          <p className="text-sm text-gray-600">
+              Most platforms ask what kind of provider you want. <br />
+              We ask how you want to <em>feel</em>. <br />
+              Then we guide you toward a healing path — somatic, creative, cultural, or spiritual — that actually speaks to your soul.
+            </p>
         </div>
 
         {/* Card 2 */}
         <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
           <div className="text-3xl mb-3">🌿</div>
           <h4 className="font-semibold text-lg mb-1">Not Just Titles</h4>
-          <p className="text-sm text-gray-600">Fit over credentials</p>
+          <p className="text-sm text-gray-600">Licensed therapist. Spiritual teacher. Ancestral guide.
+          We don’t box healing in. You connect with people who resonate — not just those who are credentialed.</p>
         </div>
 
         {/* Card 3 */}
         <div className="rounded-xl bg-[#f9fafb] border border-gray-200 p-6 text-center shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
           <div className="text-3xl mb-3">🧭</div>
           <h4 className="font-semibold text-lg mb-1">Feels Human</h4>
-          <p className="text-sm text-gray-600">Not clinical, not cold</p>
+          <p className="text-sm text-gray-600">
+              No intake forms asking what’s wrong with you. <br />
+              No cold clinical language. <br />
+              Just a soulful space to move, feel, create, breathe — and be seen.
+            </p>
         </div>
       </div>
     </section>

@@ -14,22 +14,25 @@ export default function LandingPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const userIntentOptions = [
-    "I'm navigating a breakup",
-    "I'm feeling anxious all the time",
-    "I want to explore my identity",
-    "I'm burned out",
-    "I need help processing trauma",
-    "I'm stuck creatively",
-    "I'm curious about spirituality",
-    "I want to reconnect with my body",
-    "I'm learning to set boundaries",
-    "I want to love myself again",
-    "I'm grieving someone or something",
-    "I feel disconnected from who I am",
-    "I want to feel more present",
-    "I'm overwhelmed and don’t know why",
-    "I want to rebuild trust in myself"
+    "I'm healing from a breakup",
+    "I feel anxious or unsettled all the time",
+    "I want to explore who I really am",
+    "I'm burned out and disconnected from myself",
+    "I've been holding onto something heavy",
+    "I feel creatively stuck",
+    "I'm curious about my spiritual side",
+    "I want to feel safe in my body again",
+    "I'm learning to set boundaries with others",
+    "I want to love and trust myself again",
+    "I'm grieving someone or something important",
+    "I feel disconnected from who I used to be",
+    "I want to feel more present in my life",
+    "I'm overwhelmed, but I don’t know why",
+    "I'm trying to reconnect with joy",
+    "I want to break old patterns and begin again",
+    "I'm not sure what I need — but I know I need something"
   ];
+  
   
 
   const healingExamples = [

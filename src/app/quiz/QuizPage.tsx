@@ -6,47 +6,98 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const healingStyleMessages = {
+    'Creative Expression & Art-Based Healing': "This path is for those who feel deeply and need to express what words can't. Whether through painting, journaling, music, or movement — this is about reconnecting with your inner voice and letting it speak freely.",
+    'Somatic Therapy & Body-Based Work': "This path helps you come home to your body. Through breathwork, grounding practices, and somatic release, it's about feeling safe again in your physical self and gently unwinding what’s been held inside.",
+    'Inner Child & Parts Work': "This path invites you to tend to the younger parts of you that still need love, safety, and care. It’s gentle, deep work — helping you rebuild inner trust and reconnect with forgotten pieces of your story.",
+    'Cultural & Ancestral Healing': "This path honors where you come from. Through ancestral wisdom, storytelling, and cultural practices, it's about reclaiming identity, lineage, and the deep-rooted healing that can only come from knowing your roots.",
+    'Spiritual & Energetic Healing': "This path connects you to something bigger — energy, spirit, intuition, or the unseen. It’s ideal for those feeling drawn toward meaning, soul work, or energetic alignment beyond traditional methods.",
+    'Mindfulness-Based Healing': "This path supports presence and stillness. Through meditation, awareness, and gentle practices, it’s for those seeking peace, emotional regulation, and clarity in the moment-to-moment experience of life.",
+    'Reflective Healing & Talk-Based Support': "This path is rooted in thoughtful conversation and reflective insight. Ideal if you want to talk things through with someone who sees you clearly, listens deeply, and holds gentle space for your process."
+  };
+  
+
 const questions = [
-  {
-    question: 'When emotions come up, what’s most true for you?',
-    options: [
-      'I overthink or try to “fix” them',
-      'I shut down or dissociate',
-      'I want to feel them but don’t know how',
-      'I try to stay with them and let them move through me',
-    ],
-  },
-  {
-    question: 'Which of these sounds most supportive right now?',
-    options: [
-      'Exploring my inner child and unmet needs',
-      'Grounding myself through body awareness',
-      'Expressing emotions creatively (writing, art, etc.)',
-      'Feeling held in a gentle 1-on-1 space',
-    ],
-  },
-  {
-    question: 'What kind of energy do you want in your sessions?',
-    options: [
-      'Reflective and thoughtful',
-      'Creative and expressive',
-      'Somatic and body-based',
-      'Soft and nurturing',
-    ],
-  },
-  {
-    question: 'Do you prefer licensed therapists or alternative guides?',
-    options: [
-      'Licensed therapists only',
-      'Open to both',
-      'Non-clinical healing guides are more my vibe',
-    ],
-  },
-  {
-    question: 'Would you like therapy online or in person?',
-    options: ['Online', 'In Person', 'Either'],
-  },
-];
+    {
+      question: 'When emotions come up, what feels most true for you?',
+      options: [
+        'I overthink or try to “fix” them',
+        'I shut down or feel disconnected',
+        'I want to feel them but don’t know how',
+        'I try to stay present and let them move through me',
+      ],
+    },
+    {
+      question: 'Which kind of support feels most nourishing right now?',
+      options: [
+        'Exploring my inner child and unmet needs',
+        'Grounding through body awareness and somatic work',
+        'Expressing my emotions through creativity (art, writing, movement)',
+        'Feeling gently held in 1-on-1 space with someone attuned to me',
+      ],
+    },
+    {
+      question: 'What kind of energy are you seeking in a guide?',
+      options: [
+        'Reflective and thoughtful',
+        'Creative and expressive',
+        'Somatic and grounding',
+        'Soft, warm, and nurturing',
+      ],
+    },
+    {
+      question: 'What kind of healing guides are you open to?',
+      options: [
+        'Only licensed therapists',
+        'Open to both licensed and non-licensed guides',
+        'Prefer non-clinical, soulful healing guides',
+      ],
+    },
+    {
+      question: 'Do you prefer to connect online or in person?',
+      options: ['Online', 'In person', 'I’m open to either'],
+    },
+    {
+      question: 'Do you feel called to any specific healing paths?',
+      options: [
+        'Creative expression & art-based healing',
+        'Somatic or body-based work',
+        'Spiritual or ancestral healing',
+        'Inner child or parts work',
+        'Mindfulness & presence practices',
+        'I’m not sure yet — I’m open to exploring',
+      ],
+    },
+    {
+      question: 'What’s something you’re hoping to feel more of through healing?',
+      options: [
+        'Peace or calm in my body',
+        'Clarity around who I am',
+        'Joy, lightness, or creative flow',
+        'Trust in myself or others',
+        'A sense of connection or meaning',
+        'I’m not sure — just something different than now',
+      ],
+    },
+    {
+      question: 'Do you have a general range you’d like to stay within per session?',
+      options: [
+        'Under $75',
+        '$75–$125',
+        '$125–$175',
+        'I’m flexible / open',
+      ],
+    },
+    {
+      question: 'Where are you in your healing journey?',
+      options: [
+        'I’m just beginning to explore this work',
+        'I’ve done some therapy or healing before',
+        'I’ve been on this path for a while and want to go deeper',
+      ],
+    },
+  ];
+  
 
 const modalityMap = {
   'Creative Expression & Art-Based Healing': [
@@ -79,22 +130,25 @@ const slugMap = {
 };
 
 const intentionMessages = {
-    "I'm navigating a breakup": "Breakups can shake our sense of self. This journey will help you begin to heal, reconnect, and feel whole again.",
-    "I'm feeling anxious all the time": "Anxiety is heavy to carry. Let’s explore gentle practices that calm your system and bring back peace.",
-    "I want to explore my identity": "That’s a beautiful and brave intention. This space is here to support your unfolding and self-discovery.",
-    "I'm burned out": "We know burnout can be overwhelming. Let’s discover how we can help you recharge and reconnect.",
-    "I need help processing trauma": "You're not alone in carrying your pain. This journey offers compassionate paths to gently process and heal.",
-    "I'm stuck creatively": "Feeling blocked is frustrating — but your creativity is still there. Let’s reconnect with it together.",
-    "I'm curious about spirituality": "Your curiosity is sacred. Let’s explore healing paths that align with your spiritual questions and desires.",
-    "I want to reconnect with my body": "It’s powerful to seek connection with your body. This journey will guide you to modalities that support that reconnection.",
-    "I'm learning to set boundaries": "Setting boundaries is an act of self-love. Let’s find support that empowers you to honor your needs.",
-    "I want to love myself again": "You deserve your own tenderness. Let’s rediscover the parts of you that are deeply lovable and whole.",
-    "I'm grieving someone or something": "Grief takes many forms. This journey will help you hold that grief with care and compassion.",
-    "I feel disconnected from who I am": "It’s okay to feel lost. We’ll help you find healing paths that bring you back to yourself.",
-    "I want to feel more present": "Presence is a gift. Let’s find modalities that support groundedness and connection in your daily life.",
-    "I'm overwhelmed and don’t know why": "That feeling matters. Let’s gently explore what’s beneath the overwhelm and find soothing support.",
-    "I want to rebuild trust in myself": "You’re worthy of trust — especially from yourself. Let’s begin a healing journey to restore that inner bond.",
+    "I'm healing from a breakup": "Breakups can shake your sense of self. This journey helps you heal, reconnect, and feel whole again.",
+    "I feel anxious or unsettled all the time": "Anxiety is heavy to carry. We’ll explore gentle paths to bring your system back to peace and presence.",
+    "I want to explore who I really am": "That’s a beautiful and brave intention. We’re here to support your unfolding and help you feel more like yourself.",
+    "I'm burned out and disconnected from myself": "Burnout dims your light. Let’s guide you toward rest, reconnection, and the space to breathe again.",
+    "I've been holding onto something heavy": "Even unnamed pain deserves care. This journey invites you to release, express, and begin to feel lighter.",
+    "I feel creatively stuck": "Your creativity isn’t gone — it’s waiting. Let’s gently reconnect you to your voice, your spark, and your expression.",
+    "I'm curious about my spiritual side": "Your curiosity is sacred. Let’s explore healing paths that align with your spirit, your questions, and your journey.",
+    "I want to feel safe in my body again": "Reconnecting with your body is powerful. This journey offers somatic and grounding practices to help you come home to yourself.",
+    "I'm learning to set boundaries with others": "Boundaries are a form of self-love. Let’s help you strengthen your voice and honor what feels right for you.",
+    "I want to love and trust myself again": "You deserve your own tenderness. Let’s rediscover the parts of you that are deeply lovable and whole.",
+    "I'm grieving someone or something important": "Grief takes many shapes. This space offers care and presence for the losses your heart still holds.",
+    "I feel disconnected from who I used to be": "It’s okay to feel lost. Let’s help you remember — and reconnect with — the parts of you that still remain.",
+    "I want to feel more present in my life": "Presence is a gift. We’ll help you find practices that return you to the moment, and to yourself.",
+    "I'm overwhelmed, but I don’t know why": "Even without answers, your feelings matter. Let’s hold space and gently explore what’s beneath the surface.",
+    "I'm trying to reconnect with joy": "Joy is still within reach. Let’s guide you toward healing that opens the door to lightness and aliveness again.",
+    "I want to break old patterns and begin again": "You are not your past. This journey helps you release old stories and step into something new.",
+    "I'm not sure what I need — but I know I need something": "You don’t need all the answers to begin. Let’s take the first step together, gently and with care."
   };
+  
   
 
 export default function QuizPage() {
@@ -214,8 +268,11 @@ export default function QuizPage() {
           >
             <h2 className="text-2xl font-bold text-purple-700 mb-4">💫 Your Healing Style</h2>
             <p className="text-gray-800 mb-6 leading-relaxed">
-              Based on your answers, <span className="font-semibold">{therapy}</span> might be the most supportive for where you are right now.
-            </p>
+                Based on what you shared, <span className="font-semibold">{therapy}</span> might be the path that most deeply supports where you are right now.
+                </p>
+                <p className="text-gray-700 italic mb-6">
+                {healingStyleMessages[therapy]}
+                </p>
             <div className="flex flex-col gap-4">
               <Link
                 href={{ pathname: '/therapists', query: { modality: tags.join(',') } }}

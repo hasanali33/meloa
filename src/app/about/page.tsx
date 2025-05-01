@@ -24,7 +24,7 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          We’re Not Just Building a Platform.<br />We’re Building a Movement.
+          We’re Not Just Another Wellness Platform.<br />We’re making space for healing that actually fits you.
         </motion.h1>
 
         <motion.p
@@ -33,7 +33,7 @@ export default function AboutPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          Gen Z and Millennials are the most therapy-curious generations ever — but most platforms weren’t built for <span className="underline decoration-purple-400 underline-offset-4">how they actually want to heal</span>.
+          Gen Z is the most therapy-aware generation — but that doesn’t mean therapy always worked.
         </motion.p>
 
         <motion.p
@@ -42,33 +42,42 @@ export default function AboutPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          Meloa exists because traditional therapy left too many people behind. Because healing isn’t one-size-fits-all. Because your culture, creativity, and spirit deserve to be part of your healing journey.
+          A lot of people try it, feel unseen, and quietly give up. Meloa is for the ones who heal differently — through movement, music, community, and culture. We’re building a space that actually meets you where you are.
         </motion.p>
+
+        <motion.div
+          className="max-w-3xl mx-auto mb-16"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+        >
+          <h2 className="text-2xl font-bold mb-2">What is Meloa?</h2>
+          <p className="text-white/90">
+            Meloa helps you discover your healing style — then matches you with guides who actually get you.
+            Whether that’s breathwork, journaling, somatic therapy, or ancestral healing, we help you find support that speaks your language.
+          </p>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
           {[
             {
-              title: '🎭 Healing Needs a Rebrand',
-              text: 'When people think of therapy, they often imagine cold couches, clinical checklists, or outdated systems. We’re here to flip that. Meloa is where ancestral wisdom meets modern design. Where your favorite breathwork coach, inner child healer, or dancing monk finally has a home — and so do you.'
+              title: '🔵 Healing Needs a Redesign',
+              text: 'Therapy shouldn’t feel like a cold couch and a checklist. We’re building something that honors who you are — your roots, your rituals, your creative spirit.'
             },
             {
-              title: '🌏 Global. Personal. Human.',
-              text: 'A trans teen seeking queer-affirming support. A spiritual healer in Peru guiding through plant medicine. A Japanese monk blending Zen with journaling. Meloa is where they’re all seen — and where you can find your path.'
+              title: '🛠️ Not for Everyone. Just for You.',
+              text: 'This isn’t about fitting people into systems. It’s about building a space where healing meets you where you are. Whether that’s through poetry, breathwork, prayer, or stillness.'
             },
             {
-              title: '🌟 We’re for the Ones Who Do It Differently',
-              text: 'We’re here for the spiritual guide who never felt welcome on traditional therapy sites. For the somatic facilitator blending trauma release with movement. For the person healing through art, not algorithms. Meloa honors the spectrum of what healing can be — and we help you find what resonates.'
-            },
-            {
-              title: '🌈 For Healers, It’s About Being Seen',
-              text: 'Most platforms ask healers to fit in a box. Meloa lets them show up fully — with all their creative, cultural, and spiritual nuance. Whether you’re licensed or not, we believe in your power to hold space and transform lives.'
+              title: '🌏 Real People. Real Healing.',
+              text: 'Whether you’re a teen figuring it out, a healer in Peru sharing ancestral wisdom, or someone just tired of feeling alone — Meloa is where your story actually matters.'
             },
           ].map(({ title, text }, i) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.2 }}
+              transition={{ delay: 0.9 + i * 0.2 }}
             >
               <h3 className="text-xl font-bold mb-2">{title}</h3>
               <p className="text-white/90 leading-relaxed">{text}</p>
@@ -93,4 +102,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
